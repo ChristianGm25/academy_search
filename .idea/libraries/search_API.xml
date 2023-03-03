@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="search_API">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../search_API" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../search_API/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../search_API/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

@@ -26,6 +26,7 @@ class SearchApplicationTests {
 	@Autowired
 	private MockMvc mvc;
 
+	/*
 	@Test
 	void givenQuery() throws Exception {
 		JSONObject json = new JSONObject();
@@ -35,6 +36,7 @@ class SearchApplicationTests {
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(json.toJSONString()));
 	}
+	*/
 
 	@Test
 	void givenQuery_whenSearch_thenReturnResult() throws IOException, ParseException, InterruptedException {

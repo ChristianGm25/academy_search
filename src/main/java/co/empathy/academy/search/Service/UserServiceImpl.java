@@ -3,44 +3,49 @@ package co.empathy.academy.search.Service;
 import co.empathy.academy.search.Model.User;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class UserServiceImpl implements UserService {
 
-    ConcurrentHashMap<Integer, User> users;
-    UserEngine userEngine;
 
-    public ConcurrentHashMap<Integer, User> getUsers() {
-        return users;
+    UserEngineImpl userEngine;
+
+    public UserServiceImpl(UserEngineImpl userEngine) {
+        this.userEngine = userEngine;
     }
-
-    public void setUsers(ConcurrentHashMap<Integer, User> users) {
-        this.users = users;
-    }
-
     @Override
-    public void insert(User u) {
+    public String insert(User u) {
         if (u != null){
-            userEngine.insert(u);
+            return userEngine.insert(u);
         }
+        return "";
     }
 
+
+
     @Override
-    public void delete(int id) {
+    public String delete(int id) {
         if (id > 0){
-            userEngine.delete(id);
+            return userEngine.delete(id);
         }
+        return "";
     }
 
     @Override
-    public void update(int id, User u) {
+    public String update(int id, User u) {
         if ((id>0) && (u != null)){
-            userEngine.update(id, u);
+            return userEngine.update(id, u);
         }
+        return "";
     }
 
     @Override
     public String list() {
         return userEngine.list();
     }
+
+    @Override
+    public User user(int id) {
+        return userEngine.user(id);
+    }
+
 }

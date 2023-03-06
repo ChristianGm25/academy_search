@@ -1,8 +1,8 @@
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/Service/SearchService.java
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/Service/SearchServiceImpl.java
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/Controller/SearchController.java
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/Model/QueryCluster.java
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/Configuration/Config.java
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/SearchApplication.java
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/Service/ElasticEngine.java
-/mnt/d/Academy_Projects_REPO/search/src/main/java/co/empathy/academy/search/Service/ElasticEngineImpl.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/SearchApplication.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/Model/QueryCluster.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/Service/ElasticEngineImpl.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/Service/SearchService.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/Controller/SearchController.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/Service/SearchServiceImpl.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/Configuration/Config.java
+/mnt/d/Proyectos/search/src/main/java/co/empathy/academy/search/Service/ElasticEngine.java

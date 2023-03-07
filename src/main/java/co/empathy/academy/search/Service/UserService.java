@@ -1,11 +1,12 @@
 package co.empathy.academy.search.Service;
 
+import co.empathy.academy.search.Model.ResponseModel;
 import co.empathy.academy.search.Model.User;
 
 public interface UserService {
-    String insert(User u);
-    String delete(int id);
-    String update(int id, User u);
-    String list();
-    User user(int id);
+    ResponseModel insert(User u);
+    ResponseModel delete(int id);
+    ResponseModel update(int id, User u);
+    ResponseModel list();
+    ResponseModel user(int id);
 }

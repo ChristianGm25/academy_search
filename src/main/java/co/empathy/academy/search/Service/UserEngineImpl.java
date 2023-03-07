@@ -30,6 +30,7 @@ public class UserEngineImpl implements  UserEngine{
 
     @Override
     public String update(int id, User u) {
+
         if (users.contains(id)){
             users.put(id, u);
             return "The user has been updated";
@@ -43,6 +44,7 @@ public class UserEngineImpl implements  UserEngine{
     @Override
     public String list() {
         if (users.isEmpty()){
+
             return "There are no users";
         }
         String ret = "";

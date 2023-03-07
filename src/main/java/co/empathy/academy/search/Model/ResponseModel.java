@@ -1,7 +1,13 @@
 package co.empathy.academy.search.Model;
 
-public class Response {
+public class ResponseModel {
     String message;
+
+    public ResponseModel(int id,String message) {
+        this.message = message;
+        this.id = id;
+    }
+
     int id;
 
     public String getMessage() {

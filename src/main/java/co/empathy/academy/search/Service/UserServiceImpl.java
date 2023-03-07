@@ -1,5 +1,6 @@
 package co.empathy.academy.search.Service;
 
+import co.empathy.academy.search.Model.ResponseModel;
 import co.empathy.academy.search.Model.User;
 import org.springframework.stereotype.Service;
 
@@ -13,38 +14,39 @@ public class UserServiceImpl implements UserService {
         this.userEngine = userEngine;
     }
     @Override
-    public String insert(User u) {
+    public ResponseModel insert(User u) {
         if (u != null){
             return userEngine.insert(u);
         }
-        return "";
+        return new ResponseModel(400,"Error");
     }
 
 
 
     @Override
-    public String delete(int id) {
+    public ResponseModel delete(int id) {
         if (id > 0){
             return userEngine.delete(id);
         }
-        return "";
+        return new ResponseModel(400,"Error");
     }
 
     @Override
-    public String update(int id, User u) {
+    public ResponseModel update(int id, User u) {
         if ((id>0) && (u != null)){
             return userEngine.update(id, u);
         }
-        return "";
+        return new ResponseModel(400, "Invalid id or user");
     }
 
     @Override
-    public String list() {
+    public ResponseModel list() {
         return userEngine.list();
     }
 
     @Override
-    public User user(int id) {
+    public ResponseModel user(int id) {
+
         return userEngine.user(id);
     }
 

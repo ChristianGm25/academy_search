@@ -16,7 +16,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-
     @GetMapping("/list")
     public ResponseEntity list(){
         String ret = userService.list();
@@ -24,17 +23,17 @@ public class UserController {
             String s = "List obtained: \n" + ret + "\n";
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
-        if(ret.equals("")){
-            return new ResponseEntity<>("There are no users", HttpStatus.NO_CONTENT);
+        if(ret.isEmpty()){
+            return new ResponseEntity<>("There are no users\n", HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Bad Request\n", HttpStatus.BAD_REQUEST);
         }
     }
 
     /*
     Way of use:
-    curl -i -H "Content-Type: application/json" -d '{"id":2,"name":"Name", "email":"name@email.com"}' -X POST "http://localhost:8080/insert"
+    curl -i -H "Content-Type: application/json" -d '{"id":1,"name":"Name", "email":"insert@email.com"}' -X POST "http://localhost:8080/insert"
      */
     @RequestMapping(path="/insert", method=RequestMethod.POST)
     public ResponseEntity<String> insert(@RequestBody User user){
@@ -43,21 +42,21 @@ public class UserController {
             return new ResponseEntity<>("User successfully added\n", ret);
         }
         else{
-            return new ResponseEntity<>("Bad Request", ret);
+            return new ResponseEntity<>("Bad Request\n", ret);
         }
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@RequestParam(value = "id") int id){
+    @RequestMapping(path="/delete/{id}",method={RequestMethod.DELETE, RequestMethod.GET})
+    public ResponseEntity delete(@PathVariable(value="id") int id){
         HttpStatus ret = userService.delete(id);
         if(ret.value()==200){
-            return new ResponseEntity<>("User removed", ret);
+            return new ResponseEntity<>("User removed\n", HttpStatus.OK);
         }
         if(ret.value()==204){
-            return new ResponseEntity<>("User not found", ret);
+            return new ResponseEntity<>("User not found\n", HttpStatus.OK);
         }
         else{
-            return new ResponseEntity<>("Bad Request", ret);
+            return new ResponseEntity<>("Bad Request\n", ret);
         }
     }
 
@@ -68,25 +67,29 @@ public class UserController {
             String s = "User found: " + ret;
             return new ResponseEntity<>(s, HttpStatus.OK);
         }
-        if(ret.equals("")){
-            return new ResponseEntity<>("User not found", HttpStatus.NO_CONTENT);
+        else if (ret.equals("")) {
+            return new ResponseEntity<>("User not found\n", HttpStatus.NO_CONTENT);
         }
         else{
-            return new ResponseEntity<>("Bad Request", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Bad Request\n", HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity update(@PathParam("id") int id, @RequestBody User user){
+    /*
+    Way of use:
+    curl -i -H "Content-Type: application/json" -d '{"id":3,"name":"Name", "email":"name@email.com"}' -X POST "http://localhost:8080/update/1"
+     */
+    @RequestMapping(path="/update/{id}", method = {RequestMethod.PUT, RequestMethod.POST})
+    public ResponseEntity update(@PathVariable(value="id") int id, @RequestBody User user){
         HttpStatus ret = userService.update(id, user);
         if(ret.value()==200){
-            return new ResponseEntity<>("User updated", ret);
+            return new ResponseEntity<>("User updated\n", ret);
         }
         if(ret.value()==201){
-            return new ResponseEntity<>("User created", ret);
+            return new ResponseEntity<>("User created\n", ret);
         }
         else{
-            return new ResponseEntity<>("Bad Request", ret);
+            return new ResponseEntity<>("Bad Request\n", ret);
         }
     }
 }

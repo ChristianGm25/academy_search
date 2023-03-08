@@ -18,7 +18,7 @@ public class UserEngineImpl implements  UserEngine{
 
     @Override
     public HttpStatus delete(int id) {
-        if (users.contains(id)){
+        if (users.containsKey(id)){
             users.remove(id);
             return HttpStatus.OK;
         }
@@ -30,7 +30,7 @@ public class UserEngineImpl implements  UserEngine{
     @Override
     public HttpStatus update(int id, User u) {
 
-        if (users.contains(id)){
+        if (users.containsKey(id)){
             users.put(id, u);
             return HttpStatus.OK;
         }
@@ -47,10 +47,9 @@ public class UserEngineImpl implements  UserEngine{
         }
         String ret = "";
         for (int key: users.keySet()){
-            ret += "ID: " + key + " Name: " + users.get(key).getName() + "" +
+            ret +="ID: " + key + " Name: " + users.get(key).getName() + "" +
                     " Email: " + users.get(key).getEmail() + "\n";
         }
-        System.out.print(ret);
         return ret;
     }
 

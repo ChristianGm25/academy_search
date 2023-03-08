@@ -1,12 +1,12 @@
 package co.empathy.academy.search.Service;
 
-import co.empathy.academy.search.Model.ResponseModel;
 import co.empathy.academy.search.Model.User;
+import org.springframework.http.HttpStatus;
 
 public interface UserEngine {
-    ResponseModel insert(User u);
-    ResponseModel delete(int id);
-    ResponseModel update(int id, User u);
-    ResponseModel list();
-    ResponseModel user(int id);
+    HttpStatus insert(User u);
+    HttpStatus delete(int id);
+    HttpStatus update(int id, User u);
+    String list();
+    String user(int id);
 }

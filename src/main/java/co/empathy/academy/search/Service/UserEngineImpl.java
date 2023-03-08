@@ -1,8 +1,8 @@
 package co.empathy.academy.search.Service;
 
-import co.empathy.academy.search.Model.ResponseModel;
 import co.empathy.academy.search.Model.User;
-import org.elasticsearch.client.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,60 +11,57 @@ public class UserEngineImpl implements  UserEngine{
 
     ConcurrentHashMap<Integer, User> users = new ConcurrentHashMap<>();
     @Override
-    public ResponseModel insert(User u) {
-        if (u == null){
-            return new ResponseModel(400,"That user is not valid");
-        }
+    public HttpStatus insert(User u) {
         users.put(u.getId(), u);
-        return new ResponseModel(200,"The user was succesfully added");
+        return HttpStatus.ACCEPTED;
     }
 
     @Override
-    public ResponseModel delete(int id) {
+    public HttpStatus delete(int id) {
         if (users.contains(id)){
             users.remove(id);
-            return new ResponseModel(200,"The user has been removed");
+            return HttpStatus.OK;
         }
         else{
-
-            return new ResponseModel(400,"The user was not found");
+            return HttpStatus.NO_CONTENT;
         }
     }
 
     @Override
-    public ResponseModel update(int id, User u) {
+    public HttpStatus update(int id, User u) {
 
         if (users.contains(id)){
             users.put(id, u);
-            return new ResponseModel(200,"The user has been updated");
+            return HttpStatus.OK;
         }
         else{
             users.put(id, u);
-            return new ResponseModel(202,"The user did not exist, but it was added");
+            return HttpStatus.CREATED;
         }
     }
 
     @Override
-    public ResponseModel list() {
+    public String list() {
         if (users.isEmpty()){
-            return new ResponseModel(400,"There are no users");
+            return "";
         }
         String ret = "";
         for (int key: users.keySet()){
             ret += "ID: " + key + " Name: " + users.get(key).getName() + "" +
                     " Email: " + users.get(key).getEmail() + "\n";
         }
-        return new ResponseModel(200,ret);
+        System.out.print(ret);
+        return ret;
     }
 
     @Override
-    public ResponseModel user(int id) {
+    public String user(int id) {
         User user = users.get(id);
         if(user==null){
-            return new ResponseModel(400, "User not found");
+            return "";
         }
         String ret = "ID: " + id + " Name: " + user.getName() + "" +
                 " Email: " + user.getEmail() + "\n";
-        return new ResponseModel(200, ret);
+        return ret;
     }
 }

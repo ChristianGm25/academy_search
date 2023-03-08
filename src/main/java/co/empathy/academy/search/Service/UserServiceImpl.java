@@ -1,7 +1,7 @@
 package co.empathy.academy.search.Service;
 
-import co.empathy.academy.search.Model.ResponseModel;
 import co.empathy.academy.search.Model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,38 +14,38 @@ public class UserServiceImpl implements UserService {
         this.userEngine = userEngine;
     }
     @Override
-    public ResponseModel insert(User u) {
+    public HttpStatus insert(User u) {
         if (u != null){
             return userEngine.insert(u);
         }
-        return new ResponseModel(400,"Error");
+        return HttpStatus.BAD_REQUEST;
     }
 
 
 
     @Override
-    public ResponseModel delete(int id) {
+    public HttpStatus delete(int id) {
         if (id > 0){
             return userEngine.delete(id);
         }
-        return new ResponseModel(400,"Error");
+        return HttpStatus.BAD_REQUEST;
     }
 
     @Override
-    public ResponseModel update(int id, User u) {
+    public HttpStatus update(int id, User u) {
         if ((id>0) && (u != null)){
             return userEngine.update(id, u);
         }
-        return new ResponseModel(400, "Invalid id or user");
+        return HttpStatus.BAD_REQUEST;
     }
 
     @Override
-    public ResponseModel list() {
+    public String list() {
         return userEngine.list();
     }
 
     @Override
-    public ResponseModel user(int id) {
+    public String user(int id) {
 
         return userEngine.user(id);
     }

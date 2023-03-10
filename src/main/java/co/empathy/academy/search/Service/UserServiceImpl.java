@@ -3,6 +3,7 @@ package co.empathy.academy.search.Service;
 import co.empathy.academy.search.Model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,9 +33,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public HttpStatus update(int id, User u) {
-        if ((id>0) && (u != null)){
-            return userEngine.update(id, u);
+    public HttpStatus update(User u) {
+        if (u != null){
+            return userEngine.update(u);
         }
         return HttpStatus.BAD_REQUEST;
     }
@@ -48,6 +49,11 @@ public class UserServiceImpl implements UserService {
     public String user(int id) {
 
         return userEngine.user(id);
+    }
+
+    @Override
+    public HttpStatus upload(MultipartFile file) {
+        return userEngine.upload(file);
     }
 
 }

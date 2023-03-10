@@ -1,10 +1,19 @@
 package co.empathy.academy.search.Service;
 
 import co.empathy.academy.search.Model.User;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class UserEngineImpl implements  UserEngine{
@@ -28,14 +37,14 @@ public class UserEngineImpl implements  UserEngine{
     }
 
     @Override
-    public HttpStatus update(int id, User u) {
+    public HttpStatus update(User u) {
 
-        if (users.containsKey(id)){
-            users.put(id, u);
+        if (users.containsKey(u.getId())){
+            users.put(u.getId(), u);
             return HttpStatus.OK;
         }
         else{
-            users.put(id, u);
+            users.put(u.getId(), u);
             return HttpStatus.CREATED;
         }
     }
@@ -62,5 +71,23 @@ public class UserEngineImpl implements  UserEngine{
         String ret = "ID: " + id + " Name: " + user.getName() + "" +
                 " Email: " + user.getEmail() + "\n";
         return ret;
+    }
+
+    @Override
+    public HttpStatus upload(MultipartFile file){
+        try {
+            InputStream inputStream = file.getInputStream();
+            InputStreamReader reader = new InputStreamReader(inputStream);
+            Gson gson = new Gson();
+            JSONObject jsonElement = gson.fromJson(reader, JSONObject.class); // read contents of file to JSON object
+            System.out.print(jsonElement);
+            User u = new User(jsonElement.getAsNumber("id").intValue(), jsonElement.getAsString("name"),jsonElement.getAsString("email"));
+            insert(u);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return HttpStatus.OK;
     }
 }

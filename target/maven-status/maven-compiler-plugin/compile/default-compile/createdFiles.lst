@@ -12,3 +12,4 @@ co/empathy/academy/search/Controller/SearchController.class
 co/empathy/academy/search/Model/QueryCluster.class
 co/empathy/academy/search/Service/UserEngineImpl.class
 co/empathy/academy/search/Service/UserEngine.class
+co/empathy/academy/search/Parser/UsersParser.class

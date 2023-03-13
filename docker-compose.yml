@@ -1,8 +1,22 @@
 version: "3.9"
 services:
-  web:
+
+  elasticsearch:
+    image: elasticsearch:7.17.2
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - elastic
+
+  search_api:
     build: .
     ports:
       - "8080:8080"
-  elasticsearch:
-    image: "elasticsearch:7.17.2"
+    networks:
+      - elastic
+networks:
+   elastic:
+     driver: bridge

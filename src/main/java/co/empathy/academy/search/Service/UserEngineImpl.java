@@ -68,27 +68,32 @@ public class UserEngineImpl implements  UserEngine{
     }
 
     @Override
-    public HttpStatus upload(MultipartFile file){
+    public ConcurrentHashMap<Integer,String> upload(MultipartFile file){
+        ConcurrentHashMap<Integer,String> ret = new ConcurrentHashMap<>();
         try {
-            /*
-            InputStream inputStream = file.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream);
-            Gson gson = new Gson();
-            JSONObject jsonElement = gson.fromJson(reader, JSONObject.class); // read contents of file to JSON object
-            System.out.print(jsonElement.get("users"));
 
-             */
             ObjectMapper obj = new ObjectMapper();
-            List<User> users = obj.readValue(file.getBytes(), new TypeReference<List<User>>() {});
-            for (User u: users){
-                //User user = new User(u.getAsNumber("id").intValue(), u.getAsString("name"),u.getAsString("email"));
-                insert(u);
+            List<User> usersFile = obj.readValue(file.getBytes(), new TypeReference<>() {});
+            for (User u: usersFile){
+                if(users.containsKey(u.getId())){
+                    update(u);
+                    ret.put(u.getId(),"Updated");
+                }
+                else{
+                    insert(u);
+                    ret.put(u.getId(),"Created");
+                }
             }
         }
         catch (IOException e) {
             e.printStackTrace();
         }
 
-        return HttpStatus.OK;
+        return ret;
+    }
+
+    @Override
+    public void uploadAsync(MultipartFile file){
+
     }
 }

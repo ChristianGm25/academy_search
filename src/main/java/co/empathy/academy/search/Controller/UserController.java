@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 @RestController
 public class UserController {
 
@@ -123,9 +125,20 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Upload a file to insert bulk users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "File successfully loaded"),
+            @ApiResponse(responseCode = "400", description = "Error when loading the file"),
+    })
     @PostMapping(path="/upload")
     public ResponseEntity upload(@RequestBody MultipartFile file){
-        HttpStatus ret = userService.upload(file);
-        return new ResponseEntity<>("File accepted", HttpStatus.OK);
+        ConcurrentHashMap<Integer,String> ret = userService.upload(file);
+        if(ret.isEmpty()){
+            return new ResponseEntity<>("Error uploading the file", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+        }
+
     }
 }

@@ -71,7 +71,6 @@ public class UserEngineImpl implements  UserEngine{
     public ConcurrentHashMap<Integer,String> upload(MultipartFile file){
         ConcurrentHashMap<Integer,String> ret = new ConcurrentHashMap<>();
         try {
-
             ObjectMapper obj = new ObjectMapper();
             List<User> usersFile = obj.readValue(file.getBytes(), new TypeReference<>() {});
             for (User u: usersFile){
@@ -85,8 +84,13 @@ public class UserEngineImpl implements  UserEngine{
                 }
             }
         }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+            ret.clear();
+        }
         catch (IOException e) {
             e.printStackTrace();
+            ret.clear();
         }
 
         return ret;

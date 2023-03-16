@@ -139,6 +139,10 @@ public class UserController {
 
     }
 
+    @Operation(summary = "Upload a file to insert bulk users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "File successfully loaded")
+    })
     @PostMapping(path="/indexAsync")
     public ResponseEntity uploadAsync(@RequestBody MultipartFile file){
         userService.uploadAsync(file);

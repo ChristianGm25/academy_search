@@ -1,19 +1,14 @@
 package co.empathy.academy.search.Service;
 
 import co.empathy.academy.search.Model.User;
-import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import net.minidev.json.JSONObject;
-import net.minidev.json.parser.JSONParser;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class UserEngineImpl implements  UserEngine{
@@ -74,20 +69,55 @@ public class UserEngineImpl implements  UserEngine{
     }
 
     @Override
-    public HttpStatus upload(MultipartFile file){
+    public ConcurrentHashMap<Integer,String> upload(MultipartFile file){
+        ConcurrentHashMap<Integer,String> ret = new ConcurrentHashMap<>();
         try {
-            InputStream inputStream = file.getInputStream();
-            InputStreamReader reader = new InputStreamReader(inputStream);
-            Gson gson = new Gson();
-            JSONObject jsonElement = gson.fromJson(reader, JSONObject.class); // read contents of file to JSON object
-            System.out.print(jsonElement);
-            User u = new User(jsonElement.getAsNumber("id").intValue(), jsonElement.getAsString("name"),jsonElement.getAsString("email"));
-            insert(u);
+            ObjectMapper obj = new ObjectMapper();
+            List<User> usersFile = obj.readValue(file.getBytes(), new TypeReference<>() {});
+            for (User u: usersFile){
+                if(users.containsKey(u.getId())){
+                    update(u);
+                    ret.put(u.getId(),"Updated");
+                }
+                else{
+                    insert(u);
+                    ret.put(u.getId(),"Created");
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+            ret.clear();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            ret.clear();
+        }
+
+        return ret;
+    }
+
+    @Override
+    @Async
+    public void uploadAsync(MultipartFile file){
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            List<User> usersFile = obj.readValue(file.getBytes(), new TypeReference<>() {});
+            for (User u: usersFile){
+                if(users.containsKey(u.getId())){
+                    update(u);
+                }
+                else{
+                    insert(u);
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
 
-        return HttpStatus.OK;
     }
 }

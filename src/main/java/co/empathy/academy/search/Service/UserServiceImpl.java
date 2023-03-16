@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -52,8 +54,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public HttpStatus upload(MultipartFile file) {
+    public ConcurrentHashMap<Integer,String> upload(MultipartFile file) {
         return userEngine.upload(file);
+    }
+
+    @Override
+    public void uploadAsync(MultipartFile file) {
+        userEngine.uploadAsync(file);
     }
 
 }

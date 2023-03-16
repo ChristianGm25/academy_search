@@ -4,6 +4,8 @@ import co.empathy.academy.search.Model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 public interface UserService {
     HttpStatus insert(User u);
     HttpStatus delete(int id);
@@ -11,5 +13,7 @@ public interface UserService {
     String list();
     String user(int id);
 
-    HttpStatus upload(MultipartFile file);
+    ConcurrentHashMap<Integer,String> upload(MultipartFile file);
+
+    void uploadAsync(MultipartFile file);
 }

@@ -11,7 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -23,7 +26,7 @@ public class UserController {
             @ApiResponse(responseCode = "202", description = "Retrieved empty list"),
             @ApiResponse(responseCode = "400", description = "Error"),
     })
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity list(){
         String ret = userService.list();
         if(!(ret.isEmpty())){
@@ -38,16 +41,12 @@ public class UserController {
         }
     }
 
-    /*
-    Way of use:
-    curl -i -H "Content-Type: application/json" -d '{"id":1,"name":"Name", "email":"insert@email.com"}' -X POST "http://localhost:8080/insert"
-     */
     @Operation(summary = "Insert a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User successfully created"),
             @ApiResponse(responseCode = "400", description = "Error"),
     })
-    @RequestMapping(path="/insert", method=RequestMethod.POST)
+    @PostMapping("/{id}")
     public ResponseEntity<String> insert(@RequestBody User user){
         HttpStatus ret = userService.insert(user);
         if(ret.is2xxSuccessful()) {
@@ -64,7 +63,7 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "User was not found"),
             @ApiResponse(responseCode = "400", description = "Error"),
     })
-    @RequestMapping(path="/delete/{id}",method={RequestMethod.DELETE, RequestMethod.GET})
+    @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable(value="id") int id){
         HttpStatus ret = userService.delete(id);
         if(ret.value()==200){
@@ -84,7 +83,7 @@ public class UserController {
             @ApiResponse(responseCode = "204", description = "User was not found"),
             @ApiResponse(responseCode = "400", description = "Error"),
     })
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity users(@PathVariable int id){
         String ret = userService.user(id);
         if(!(ret.isEmpty())){
@@ -109,7 +108,7 @@ public class UserController {
             @ApiResponse(responseCode = "202", description = "User successfully created"),
             @ApiResponse(responseCode = "400", description = "Error"),
     })
-    @RequestMapping(path="/update", method = {RequestMethod.PUT, RequestMethod.POST})
+    @PutMapping
     public ResponseEntity update(@RequestBody User user){
         HttpStatus ret = userService.update(user);
         if(ret.value()==200){
@@ -123,9 +122,30 @@ public class UserController {
         }
     }
 
-    @PostMapping(path="/upload")
+    @Operation(summary = "Upload a file to insert bulk users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "File successfully loaded"),
+            @ApiResponse(responseCode = "400", description = "Error when loading the file"),
+    })
+    @PostMapping(path="/index")
     public ResponseEntity upload(@RequestBody MultipartFile file){
-        HttpStatus ret = userService.upload(file);
+        ConcurrentHashMap<Integer,String> ret = userService.upload(file);
+        if(ret.isEmpty()){
+            return new ResponseEntity<>("Error uploading the file", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(ret.toString(), HttpStatus.OK);
+        }
+
+    }
+
+    @Operation(summary = "Upload a file to insert bulk users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "File successfully loaded")
+    })
+    @PostMapping(path="/indexAsync")
+    public ResponseEntity uploadAsync(@RequestBody MultipartFile file){
+        userService.uploadAsync(file);
         return new ResponseEntity<>("File accepted", HttpStatus.OK);
     }
 }

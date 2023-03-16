@@ -138,4 +138,10 @@ public class UserController {
         }
 
     }
+
+    @PostMapping(path="/indexAsync")
+    public ResponseEntity uploadAsync(@RequestBody MultipartFile file){
+        userService.uploadAsync(file);
+        return new ResponseEntity<>("File accepted", HttpStatus.OK);
+    }
 }

@@ -1,3 +1,4 @@
+
 package co.empathy.academy.search;
 
 import org.springframework.boot.SpringApplication;

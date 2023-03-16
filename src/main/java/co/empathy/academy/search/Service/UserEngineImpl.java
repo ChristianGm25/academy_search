@@ -4,6 +4,7 @@ import co.empathy.academy.search.Model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
@@ -97,7 +98,26 @@ public class UserEngineImpl implements  UserEngine{
     }
 
     @Override
+    @Async
     public void uploadAsync(MultipartFile file){
+        try {
+            ObjectMapper obj = new ObjectMapper();
+            List<User> usersFile = obj.readValue(file.getBytes(), new TypeReference<>() {});
+            for (User u: usersFile){
+                if(users.containsKey(u.getId())){
+                    update(u);
+                }
+                else{
+                    insert(u);
+                }
+            }
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

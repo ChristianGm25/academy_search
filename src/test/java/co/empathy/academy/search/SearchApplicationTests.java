@@ -26,19 +26,20 @@ class SearchApplicationTests {
 	@Autowired
 	private MockMvc mvc;
 
-	/*
-	@Test
+
+    @Test
 	void givenQuery() throws Exception {
-		JSONObject json = new JSONObject();
+
+        JSONObject json = new JSONObject();
 		json.appendField("query", "hola");
 		json.appendField("clusterName", "docker-cluster");
 		mvc.perform(MockMvcRequestBuilders.get("/search/{query}", "hola"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(json.toJSONString()));
 	}
-	*/
 
-	@Test
+
+    @Test
 	void givenQuery_whenSearch_thenReturnResult() throws IOException, ParseException, InterruptedException {
 		String exampleQuery = "example query";
 		String expectedResult = "result for example query";

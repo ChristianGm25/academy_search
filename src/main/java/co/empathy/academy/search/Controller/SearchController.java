@@ -1,20 +1,26 @@
 package co.empathy.academy.search.Controller;
 
 import co.empathy.academy.search.Service.ElasticEngineImpl;
+import co.empathy.academy.search.Service.SearchService;
 import net.minidev.json.JSONObject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@RequestMapping("/movies")
 public class SearchController {
+
+    SearchService searchService;
+
     @GetMapping("/greet/{name}")
-    public String greet(@PathVariable String name){
+    public String greet(@PathVariable String name) {
         return "Hello " + name;
     }
 
     @GetMapping("/search/{query}")
-    public JSONObject getJSON(@PathVariable String query){
+    public JSONObject getJSON(@PathVariable String query) {
         JSONObject json = new JSONObject();
         //String uri = "http://localhost:9200";
         //RestTemplate rt = new RestTemplate();
@@ -28,8 +34,7 @@ public class SearchController {
         //Handle the exceptions that may arise
         try{
             clusterName = c.search();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             json.appendField("query", "Error");
             json.appendField("clusterName", "Error");
         }
@@ -37,5 +42,13 @@ public class SearchController {
         json.appendField("query", query);
         json.appendField("clusterName", clusterName);
         return json;
+    }
+
+    @PostMapping
+    public ResponseEntity indexAsync(@RequestBody MultipartFile akas, @RequestBody MultipartFile basics,
+                                     @RequestBody MultipartFile crew, @RequestBody MultipartFile episode,
+                                     @RequestBody MultipartFile principals, @RequestBody MultipartFile ratings) {
+        searchService.indexAsync(akas, basics, crew, episode, principals, ratings);
+        return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
     }
 }

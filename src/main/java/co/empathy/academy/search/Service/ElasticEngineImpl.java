@@ -4,6 +4,10 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
+import co.empathy.academy.search.Model.Akas;
+import co.empathy.academy.search.Model.Basics;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
@@ -11,17 +15,23 @@ import org.apache.http.HttpHost;
 import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RestClient;
+import org.jobrunr.scheduling.BackgroundJob;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class ElasticEngineImpl implements ElasticEngine {
 
+    Map<Long, Basics> Movies = new ConcurrentHashMap<Long, Basics>();
     @Override
     public String search() throws IOException, ParseException {
 
-        RestClient restClient = RestClient.builder(new HttpHost("localhost", 9200)).build();
+        RestClient restClient = RestClient.builder(new HttpHost("elasticsearch", 9200)).build();
         ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
         ElasticsearchClient client = new ElasticsearchClient(transport);
 
@@ -32,5 +42,24 @@ public class ElasticEngineImpl implements ElasticEngine {
         JSONObject json = (JSONObject) parser.parse(response);
 
         return json.getAsString("cluster_name");
+    }
+
+    @Override
+    public void indexAsync(MultipartFile akas, MultipartFile basics,
+                           MultipartFile crew, MultipartFile episode, MultipartFile principals,
+                           MultipartFile ratings) {
+        BackgroundJob.enqueue(() -> {
+            try {
+                ObjectMapper obj = new ObjectMapper();
+                List<Akas> movies = obj.readValue(akas.getBytes(), new TypeReference<>() {
+                });
+                for (Akas u : movies) {
+                    //save movie
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ;
+        });
     }
 }

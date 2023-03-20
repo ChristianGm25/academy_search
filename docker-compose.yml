@@ -17,6 +17,7 @@ services:
       - "8080:8080"
     networks:
       - elastic
+
 networks:
    elastic:
      driver: bridge

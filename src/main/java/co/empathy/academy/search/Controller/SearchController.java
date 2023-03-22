@@ -1,7 +1,6 @@
 package co.empathy.academy.search.Controller;
 
 import co.empathy.academy.search.Service.ElasticEngineImpl;
-import co.empathy.academy.search.Service.SearchService;
 import net.minidev.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/movies")
 public class SearchController {
 
-    SearchService searchService;
 
     @GetMapping("/greet/{name}")
     public String greet(@PathVariable String name) {
@@ -48,7 +46,8 @@ public class SearchController {
     public ResponseEntity indexAsync(@RequestBody MultipartFile akas, @RequestBody MultipartFile basics,
                                      @RequestBody MultipartFile crew, @RequestBody MultipartFile episode,
                                      @RequestBody MultipartFile principals, @RequestBody MultipartFile ratings) {
-        searchService.indexAsync(akas, basics, crew, episode, principals, ratings);
+        ElasticEngineImpl c = new ElasticEngineImpl();
+        c.indexAsync(akas, basics, crew, episode, principals, ratings);
         return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
     }
 }

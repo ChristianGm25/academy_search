@@ -32,7 +32,7 @@ public class ElasticEngineImpl implements ElasticEngine {
 
         Request request = new Request("GET", "/");
         String response = EntityUtils.toString(restClient.performRequest(request).getEntity());
-
+        System.out.println(response);
         JSONParser parser = new JSONParser();
         JSONObject json = (JSONObject) parser.parse(response);
 

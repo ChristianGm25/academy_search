@@ -2,11 +2,11 @@
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Episode.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Movie.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Service/ElasticEngineImpl.java
+/Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Rating.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/QueryCluster.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Crew.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Basics.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Akas.java
-/Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Ratings.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Service/SearchServiceImpl.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/SearchApplication.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Controller/SearchController.java

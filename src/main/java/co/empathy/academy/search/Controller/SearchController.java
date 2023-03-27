@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/movies")
 public class SearchController {
 
-
+    ElasticEngineImpl elasticEngine = new ElasticEngineImpl();
     @GetMapping("/greet/{name}")
     public String greet(@PathVariable String name) {
         return "Hello " + name;
@@ -24,14 +24,13 @@ public class SearchController {
         //RestTemplate rt = new RestTemplate();
         //JSONObject result = rt.getForObject(uri, JSONObject.class);
 
-        //Create the elastic client
-        ElasticEngineImpl c = new ElasticEngineImpl();
+
         //Variable to store clusterName
         String clusterName = "";
 
         //Handle the exceptions that may arise
         try{
-            clusterName = c.search();
+            clusterName = this.elasticEngine.search();
         } catch (Exception e) {
             json.appendField("query", "Error");
             json.appendField("clusterName", "Error");
@@ -46,8 +45,7 @@ public class SearchController {
     public ResponseEntity indexAsync(@RequestBody MultipartFile akas, @RequestBody MultipartFile basics,
                                      @RequestBody MultipartFile crew, @RequestBody MultipartFile episode,
                                      @RequestBody MultipartFile principals, @RequestBody MultipartFile ratings) {
-        ElasticEngineImpl c = new ElasticEngineImpl();
-        c.indexAsync(akas, basics, crew, episode, principals, ratings);
+        this.elasticEngine.indexAsync(akas, basics, crew, episode, principals, ratings);
         return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
     }
 }

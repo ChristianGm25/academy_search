@@ -44,6 +44,7 @@ public class ElasticEngineImpl implements ElasticEngine {
                            MultipartFile crew, MultipartFile episode, MultipartFile principals,
                            MultipartFile ratings) {
         IndexServiceImpl reader = new IndexServiceImpl(akas, basics, crew, episode, principals, ratings);
-        this.movies = reader.read();
+        this.movies = reader.read(1000);
+
     }
 }

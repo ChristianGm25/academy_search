@@ -55,7 +55,7 @@ public class Movie extends Basics {
     public String toString() {
         String result = "Tconst: " + this.getTconst().toString() + " Title: " + this.getPrimaryTitle().toString() +
                 " RuntimeMinutes: " + Integer.toString(this.getRuntimeMinutes()) + " StartYear: " + this.getStartYear()
-                + "Rating: " + this.getRating().getAverageRating();
+                + " Rating: " + this.getRating().getAverageRating();
         if (this.getGenres() != null) {
             result += " Genres: [";
             for (String genre : this.getGenres()) {

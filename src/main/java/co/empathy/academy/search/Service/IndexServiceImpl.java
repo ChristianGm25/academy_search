@@ -20,11 +20,16 @@ public class IndexServiceImpl implements IndexService {
     private BufferedReader episodeReader;
     private BufferedReader principalsReader;
     private BufferedReader ratingsReader;
-    private Map<String, Movie> result = new ConcurrentHashMap<>();
 
-    private String lastKey; //Store the last key read in the basics for the bulk
-
-
+    /**
+     *
+     * @param akas File containing the akas
+     * @param basics File containing the basics
+     * @param crew File containing the crew
+     * @param episode File containing the episodes
+     * @param principals File containing the principals
+     * @param ratings File containing the ratings
+     */
     public IndexServiceImpl(MultipartFile akas, MultipartFile basics,
                             MultipartFile crew, MultipartFile episode, MultipartFile principals,
                             MultipartFile ratings) {
@@ -41,33 +46,45 @@ public class IndexServiceImpl implements IndexService {
         }
     }
 
+    /**
+     *
+     * @param bulkSize Number of lines to be read
+     * @return  Map containing bulkSize movies
+     */
     @Override
     public Map<String, Movie> read(int bulkSize) {
+        Map<String, Movie> result = new ConcurrentHashMap<>();
         int readLines = 0;
         String line;
         try {
             readHeaders();
-            while ((readLines < bulkSize) && ((line = basicsReader.readLine()) != "")) {
-                buildMovie(line);
+            while ((readLines < bulkSize) && ((line = basicsReader.readLine()).equals(""))) {
+                //skip the adult ones
+
+                if(!(line.split("\t")[4].equals("1"))){
+                    result.put(line.split("\t")[0],buildMovie(line));
+                }
                 readLines++;
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        for (String key : this.result.keySet()) {
-            Movie tempMovie = this.result.get(key);
+        /*
+        for (String key : result.keySet()) {
+            Movie tempMovie = result.get(key);
             System.out.println(tempMovie);
             for (Akas aka : tempMovie.getAkas()) {
                 System.out.println("\t" + aka.getTitle());
             }
         }
-
+        */
         return result;
     }
 
-
+    /**
+     * Read the first line in every file, so we skip the headers
+     */
     public void readHeaders() {
         try {
             akasReader.readLine();
@@ -81,9 +98,13 @@ public class IndexServiceImpl implements IndexService {
         }
     }
 
-    public void buildMovie(String line) throws IOException {
+    /**
+     *
+     * @param line Line read from the buffer
+     * @throws IOException Error handling for the readLine
+     */
+    public Movie buildMovie(String line) throws IOException {
         Object[] split;
-        List<Akas> akas = new LinkedList<>();
 
         Movie m = new Movie();
         split = line.split("\t");
@@ -110,9 +131,53 @@ public class IndexServiceImpl implements IndexService {
         m.setRating(addRating(m.getTconst()));
         m.setCrew(addCrew(m.getTconst()));
         m.setPrincipals(addPrincipals(m.getTconst()));
-        this.result.put(m.getTconst(), m);
+        m.setEpisodes(addEpisodes(m.getTconst()));
+        return m;
     }
 
+    /**
+     *
+     * @param tconst Key associated to the series/movie
+     * @return List of episodes associated to the key
+     * @throws IOException Error handling for the readLine
+     */
+    private List<Episode> addEpisodes(String tconst) throws IOException{
+        Object[] split;
+        Episode episode;
+        List<Episode> tempEpisodes = new LinkedList<>();
+        String id;
+        String line = episodeReader.readLine();
+
+        while ((id = line.split("\t")[1]).equals(tconst)) {
+            //Mark the line in case the keys do not match
+            episodeReader.mark(300);
+            split = line.split("\t");
+            episode = new Episode();
+
+            //Set attributes
+            episode.setTconst(split[0].toString());
+            episode.setParentTconst(id);
+            if(split[2].toString().equals("\\N")){
+                episode.setSeasonNumber(-1);
+            }
+            episode.setSeasonNumber(Integer.parseInt(split[2].toString()));
+            if(split[3].toString().equals("\\N")){
+                episode.setEpisodeNumber(-1);
+            }
+            episode.setSeasonNumber(Integer.parseInt(split[3].toString()));
+            tempEpisodes.add(episode);
+            line = episodeReader.readLine();
+        }
+        episodeReader.reset();
+        return tempEpisodes;
+    }
+
+    /**
+     *
+     * @param tconst Key associated to the movie
+     * @return List of akas objects associated to the key
+     * @throws IOException Error handling for the readLine
+     */
     public List<Akas> addAkas(String tconst) throws IOException {
 
         Object[] split;
@@ -128,7 +193,7 @@ public class IndexServiceImpl implements IndexService {
             aka = new Akas();
 
             //Set attributes
-            aka.setTitleId(split[0].toString());
+            aka.setTitleId(id);
             try {
                 aka.setOrdering(Integer.parseInt(split[1].toString()));
             } catch (NumberFormatException e) {
@@ -148,6 +213,12 @@ public class IndexServiceImpl implements IndexService {
         return tempAkas;
     }
 
+    /**
+     *
+     * @param key Key to identify the movie
+     * @return Crew object associated to the key
+     * @throws IOException Error handling for the readLine
+     */
     private Crew addCrew(String key) throws IOException {
         Crew crew;
         crewReader.mark(200);
@@ -160,11 +231,17 @@ public class IndexServiceImpl implements IndexService {
         return crew;
     }
 
+    /**
+     *
+     * @param tconst Key to identify the movie
+     * @return Rating object associated to the key
+     * @throws IOException Error handling for the readLine
+     */
     private Rating addRating(String tconst) throws IOException {
         //Prepare the objects
         Object[] split;
-        Double averageRating = 0.0;
-        int votes = 0;
+        double averageRating;
+        int votes;
         Rating rating;
 
         ratingsReader.mark(100);
@@ -188,6 +265,12 @@ public class IndexServiceImpl implements IndexService {
         return rating;
     }
 
+    /**
+     *
+     * @param tconst Key to identify the movie
+     * @return List of the principals associated to the key
+     * @throws IOException Error handling for the readLine
+     */
     private List<Principals> addPrincipals(String tconst) throws IOException {
         Object[] split;
         List<Principals> tempPrincipals = new LinkedList<>();
@@ -200,6 +283,7 @@ public class IndexServiceImpl implements IndexService {
             split = line.split("\t");
             //Create new object to add
             principal = new Principals();
+            principal.setTconst(id);
             try {
                 principal.setOrdering(Integer.parseInt(split[1].toString()));
             } catch (NumberFormatException e) {
@@ -218,6 +302,11 @@ public class IndexServiceImpl implements IndexService {
         return tempPrincipals;
     }
 
+    /**
+     *
+     * @param value 1 or 0 as a string
+     * @return boolean value (true if 1, false if 0)
+     */
     public static boolean getBoolean(String value) {
         return !value.equals("0");
     }

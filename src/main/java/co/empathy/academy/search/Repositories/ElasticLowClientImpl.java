@@ -28,7 +28,8 @@ public class ElasticLowClientImpl implements ElasticLowClient {
 
     @Override
     public String search() throws IOException {
-        System.out.println("Aquí llega");
         return elasticSearchConfiguration.elasticsearchClient().cluster().health().clusterName();
     }
+
+
 }

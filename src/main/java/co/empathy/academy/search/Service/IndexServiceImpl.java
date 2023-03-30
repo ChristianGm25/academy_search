@@ -1,6 +1,9 @@
 package co.empathy.academy.search.Service;
 
+import co.elastic.clients.elasticsearch.core.IndexResponse;
+import co.empathy.academy.search.Configuration.ElasticSearchConfiguration;
 import co.empathy.academy.search.Model.*;
+import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -63,11 +66,26 @@ public class IndexServiceImpl implements IndexService {
         System.out.println(batches);
         for (int i = 0; i<batches; i++){
             this.movies = read(bulkSize);
-            //index this.movies
+            //indexBulk();
             this.movies.clear();
         }
     }
 
+    /*
+    public void indexBulk(){
+
+        Movie m;
+        for(String key: this.movies.keySet()){
+            m = this.movies.get(key);
+            IndexResponse response = searchConfiguration.elasticsearchClient().index(i -> i
+                    .index("movies")
+                    .id(product.getSku())
+                    .document(product)
+            );
+        }
+
+    }
+     */
     /**
      *
      * @param bulkSize Number of lines to be read

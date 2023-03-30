@@ -1,6 +1,6 @@
 package co.empathy.academy.search;
 
-import co.empathy.academy.search.Service.ElasticEngineImpl;
+import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
 import co.empathy.academy.search.Service.SearchService;
 import co.empathy.academy.search.Service.SearchServiceImpl;
 import net.minidev.json.JSONObject;
@@ -44,7 +44,7 @@ class SearchApplicationTests {
 		String exampleQuery = "example query";
 		String expectedResult = "result for example query";
 
-		ElasticEngineImpl client = mock(ElasticEngineImpl.class);
+		ElasticLowClientImpl client = mock(ElasticLowClientImpl.class);
 
 		given(client.search()).willReturn(expectedResult);
 
@@ -59,8 +59,7 @@ class SearchApplicationTests {
 	@Test
 	void givenQuery_whenErrorDuringSearch_thenLetItPropagate() throws IOException, ParseException, InterruptedException {
 		String exampleQuery = "example query";
-		ElasticEngineImpl client = mock(ElasticEngineImpl.class);
-
+		ElasticLowClientImpl client = mock(ElasticLowClientImpl.class);
 		given(client.search()).willThrow(RuntimeException.class);
 
 		SearchService searchService = new SearchServiceImpl(client);
@@ -71,7 +70,7 @@ class SearchApplicationTests {
 
 	@Test
 	void givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString() throws IOException, ParseException, InterruptedException {
-		ElasticEngineImpl client = mock(ElasticEngineImpl.class);
+		ElasticLowClientImpl client = mock(ElasticLowClientImpl.class);
 		SearchService searchService = new SearchServiceImpl(client);
 		String result = searchService.search("   ");
 

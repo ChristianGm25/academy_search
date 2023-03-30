@@ -1,3 +1,4 @@
+co/empathy/academy/search/Configuration/ElasticSearchConfiguration.class
 co/empathy/academy/search/Model/Rating.class
 co/empathy/academy/search/Service/UserServiceImpl.class
 co/empathy/academy/search/Service/UserService.class
@@ -8,8 +9,10 @@ co/empathy/academy/search/Controller/UserController.class
 co/empathy/academy/search/Exceptions/ExceptionHandler.class
 co/empathy/academy/search/Model/Akas.class
 co/empathy/academy/search/Model/Principals.class
+co/empathy/academy/search/Repositories/ElasticLowClientImpl.class
 co/empathy/academy/search/Service/UserEngineImpl$2.class
 co/empathy/academy/search/Model/Movie.class
+co/empathy/academy/search/Repositories/ElasticLowClient.class
 co/empathy/academy/search/Model/User.class
 co/empathy/academy/search/Model/Basics.class
 co/empathy/academy/search/Service/IndexServiceImpl.class

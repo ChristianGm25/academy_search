@@ -4,7 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f46255ef-cdb4-4dac-9ee2-fa59d82e02a8" name="Changes" comment="Full TSV reading (Map version)" />
+    <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Configuration/my_index_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Configuration/my_index_settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Model/Basics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Model/Basics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/SearchServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/SearchServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Basics.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Basics.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Crew.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Crew.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Episode.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Episode.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Movie.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/Movie.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/SearchServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/SearchServiceImpl.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,7 +39,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Assignment2_IndexIMDB" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

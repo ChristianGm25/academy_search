@@ -1,16 +1,13 @@
 package co.empathy.academy.search.Service;
 
-import co.empathy.academy.search.Model.Movie;
-import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 public interface IndexService {
     void read();
 
-    void indexAsync(long numMovies);
+    CompletableFuture<String> indexAsync(long numMovies);
 
     void indexCreation();
     void indexDeletion();

@@ -12,8 +12,8 @@ public class Basics {
     String primaryTitle;
     String originalTitle;
     boolean isAdult;
-    String startYear;
-    String endYear;
+    int startYear;
+    int endYear;
 
     int runtimeMinutes;
     String[] genres;
@@ -58,19 +58,19 @@ public class Basics {
         isAdult = adult;
     }
 
-    public String getStartYear() {
+    public int getStartYear() {
         return startYear;
     }
 
-    public void setStartYear(String startYear) {
+    public void setStartYear(int startYear) {
         this.startYear = startYear;
     }
 
-    public String getEndYear() {
+    public int getEndYear() {
         return endYear;
     }
 
-    public void setEndYear(String endYear) {
+    public void setEndYear(int endYear) {
         this.endYear = endYear;
     }
 

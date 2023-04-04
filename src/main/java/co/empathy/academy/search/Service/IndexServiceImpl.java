@@ -1,22 +1,19 @@
 package co.empathy.academy.search.Service;
 
-import co.elastic.clients.elasticsearch.core.IndexResponse;
-import co.empathy.academy.search.Configuration.ElasticSearchConfiguration;
 import co.empathy.academy.search.Model.*;
 import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CompletableFuture;
 
-
+@Service
 public class IndexServiceImpl implements IndexService {
 
     private final int bulkSize = 50000;
@@ -31,25 +28,26 @@ public class IndexServiceImpl implements IndexService {
     private List<Movie> movies = new LinkedList<>();
 
 
-    public  IndexServiceImpl(ElasticLowClientImpl e){
+    public IndexServiceImpl(ElasticLowClientImpl e) {
         this.elasticLowClient = e;
     }
-    @Override
-    public void indexAsync(long numMovies){
 
+    @Async
+    @Override
+    public CompletableFuture<String> indexAsync(long numMovies) {
         long fileSize = numMovies;
-        int batches = (int) Math.ceil(fileSize/bulkSize);
-        for (int i = 0; i<batches; i++){
+        int batches = (int) Math.ceil(fileSize / bulkSize);
+        for (int i = 0; i < batches; i++) {
             read();
             //Maybe we can replace this with JSON
-            try{
+            try {
                 elasticLowClient.indexMovies(this.movies);
-            }
-            catch (IOException e){
+            } catch (IOException e) {
                 System.out.print("Error indexing");
             }
             this.movies.clear();
         }
+        return CompletableFuture.completedFuture("Finished indexing");
     }
 
     public void indexCreation(){
@@ -139,14 +137,17 @@ public class IndexServiceImpl implements IndexService {
         m.setPrimaryTitle(split[2].toString());
         m.setOriginalTitle(split[3].toString());
         m.setAdult(getBoolean(split[4].toString()));
-        if (split[5].toString().equals("\\N")) {
-            m.setStartYear("No information");
+        try {
+            m.setStartYear(Integer.parseInt(split[5].toString()));
+        } catch (NumberFormatException e) {
+            m.setStartYear(-1);
         }
-        m.setStartYear(split[5].toString());
-        if (split[6].toString().equals("\\N")) {
-            m.setEndYear("No information");
+
+        try {
+            m.setEndYear(Integer.parseInt(split[6].toString()));
+        } catch (NumberFormatException e) {
+            m.setEndYear(-1);
         }
-        m.setEndYear(split[6].toString());
         try {
             m.setRuntimeMinutes(Integer.parseInt(split[7].toString()));
         } catch (NumberFormatException e) {
@@ -160,6 +161,7 @@ public class IndexServiceImpl implements IndexService {
         m.setEpisodes(addEpisodes(m.getTconst()));
         return m;
     }
+
 
     /**
      *

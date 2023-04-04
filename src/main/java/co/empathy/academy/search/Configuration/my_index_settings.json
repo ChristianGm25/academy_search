@@ -1,6 +1,127 @@
 {
   "mappings": {
     "properties": {
+      "tconst": {
+        "type": "text"
+      },
+      "titleType": {
+        "type": "text"
+      },
+      "primaryTitle": {
+        "type": "text"
+      },
+      "originalTitle": {
+        "type": "text"
+      },
+      "isAdult": {
+        "type": "boolean"
+      },
+      "startYear": {
+        "type": "integer"
+      },
+      "endYear": {
+        "type": "integer"
+      },
+      "runTimeMinutes": {
+        "type": "integer"
+      },
+      "genres": {
+        "type": "text"
+      },
+      "akas": {
+        "type": "nested",
+        "properties": {
+          "titleId": {
+            "type": "text"
+          },
+          "ordering": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "text"
+          },
+          "region": {
+            "type": "text"
+          },
+          "language": {
+            "type": "text"
+          },
+          "types": {
+            "type": "text"
+          },
+          "attributes": {
+            "type": "text"
+          },
+          "isOriginalTitle": {
+            "type": "boolean"
+          }
+        }
+      },
+      "principals": {
+        "type": "nested",
+        "properties": {
+          "tconst": {
+            "type": "text"
+          },
+          "ordering": {
+            "type": "integer"
+          },
+          "nconst": {
+            "type": "text"
+          },
+          "category": {
+            "type": "text"
+          },
+          "job": {
+            "type": "text"
+          }
+        }
+      },
+      "episodes": {
+        "type": "nested",
+        "properties": {
+          "tconst": {
+            "type": "text"
+          },
+          "parentTconst": {
+            "type": "text"
+          },
+          "seasonNumber": {
+            "type": "integer"
+          },
+          "episodeNumber": {
+            "type": "integer"
+          }
+        }
+      },
+      "crew": {
+        "type": "nested",
+        "properties": {
+          "tconst": {
+            "type": "text"
+          },
+          "directors": {
+            "type": "text"
+          },
+          "writers": {
+            "type": "text"
+          }
+        }
+      },
+      "rating": {
+        "type": "nested",
+        "properties": {
+          "tconst": {
+            "type": "text"
+          },
+          "averageRating": {
+            "type": "integer"
+          },
+          "numVotes": {
+            "type": "integer"
+          }
+        }
+      }
     }
-  }
+    }
 }

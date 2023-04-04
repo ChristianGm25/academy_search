@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/movies")
 public class SearchController {
 
     @Autowired
@@ -44,17 +43,5 @@ public class SearchController {
         return json;
     }
 
-    @PostMapping
-    public ResponseEntity indexAsync(@RequestBody MultipartFile akas, @RequestBody MultipartFile basics,
-                                     @RequestBody MultipartFile crew, @RequestBody MultipartFile episode,
-                                     @RequestBody MultipartFile principals, @RequestBody MultipartFile ratings) {
-        IndexService indexService = new IndexServiceImpl(akas,basics,crew,episode,principals,ratings);
-        try{
-            indexService.indexAsync(akas, basics, crew, episode, principals, ratings);
-        }
-        catch (IOException e){
-            return new ResponseEntity("Error in file", HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
-    }
+
 }

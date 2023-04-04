@@ -4,6 +4,7 @@ import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.empathy.academy.search.Configuration.ElasticSearchConfiguration;
 import co.empathy.academy.search.Model.*;
 import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -18,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class IndexServiceImpl implements IndexService {
 
+    private final int bulkSize = 50000;
     private BufferedReader akasReader;
     private BufferedReader basicsReader;
     private BufferedReader crewReader;
@@ -25,20 +27,40 @@ public class IndexServiceImpl implements IndexService {
     private BufferedReader principalsReader;
     private BufferedReader ratingsReader;
 
-    private Map<String, Movie> movies = new HashMap<>();
+    private final ElasticLowClientImpl elasticLowClient;
+    private List<Movie> movies = new LinkedList<>();
 
-    /**
-     *
-     * @param akas File containing the akas
-     * @param basics File containing the basics
-     * @param crew File containing the crew
-     * @param episode File containing the episodes
-     * @param principals File containing the principals
-     * @param ratings File containing the ratings
-     */
-    public IndexServiceImpl(MultipartFile akas, MultipartFile basics,
-                            MultipartFile crew, MultipartFile episode, MultipartFile principals,
-                            MultipartFile ratings) {
+
+    public  IndexServiceImpl(ElasticLowClientImpl e){
+        this.elasticLowClient = e;
+    }
+    @Override
+    public void indexAsync(long numMovies){
+
+        long fileSize = numMovies;
+        int batches = (int) Math.ceil(fileSize/bulkSize);
+        for (int i = 0; i<batches; i++){
+            read();
+            //Maybe we can replace this with JSON
+            try{
+                elasticLowClient.indexMovies(this.movies);
+            }
+            catch (IOException e){
+                System.out.print("Error indexing");
+            }
+            this.movies.clear();
+        }
+    }
+
+    public void indexCreation(){
+        elasticLowClient.indexCreation();
+    }
+    public void indexDeletion(){
+        elasticLowClient.indexDeletion();
+    }
+
+    @Override
+    public void setReaders(MultipartFile akas, MultipartFile basics, MultipartFile crew, MultipartFile episode, MultipartFile principals, MultipartFile ratings) {
         try {
             this.akasReader = new BufferedReader(new InputStreamReader(akas.getInputStream()));
             this.basicsReader = new BufferedReader(new InputStreamReader(basics.getInputStream()));
@@ -49,59 +71,25 @@ public class IndexServiceImpl implements IndexService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void indexAsync(MultipartFile akas, MultipartFile basics,
-                           MultipartFile crew, MultipartFile episode, MultipartFile principals,
-                           MultipartFile ratings) throws IOException{
-        if ((basics == null) || (akas == null) || (crew == null) || (episode == null) || (principals == null) ||
-                (ratings == null)){
-            throw new IOException();
-        }
-        long fileSize = basics.getSize();
-        int bulkSize = 50000;
-        System.out.println(fileSize);
-        int batches = Math.round(fileSize/bulkSize);
-        System.out.println(batches);
-        for (int i = 0; i<batches; i++){
-            this.movies = read(bulkSize);
-            //indexBulk();
-            this.movies.clear();
-        }
-    }
-
-    /*
-    public void indexBulk(){
-
-        Movie m;
-        for(String key: this.movies.keySet()){
-            m = this.movies.get(key);
-            IndexResponse response = searchConfiguration.elasticsearchClient().index(i -> i
-                    .index("movies")
-                    .id(product.getSku())
-                    .document(product)
-            );
-        }
 
     }
-     */
+
+
     /**
      *
-     * @param bulkSize Number of lines to be read
      * @return  Map containing bulkSize movies
      */
     @Override
-    public Map<String, Movie> read(int bulkSize) {
-        Map<String, Movie> result = new ConcurrentHashMap<>();
+    public void read() {
+
         int readLines = 0;
         String line;
         try {
             readHeaders();
-            while ((readLines < bulkSize) && ((line = basicsReader.readLine()) !=null)) {
+            while ((readLines < bulkSize) && ((line = basicsReader.readLine()) != null)) {
                 //skip the adult ones
                 if(!(line.split("\t")[4].equals("1"))){
-                    result.put(line.split("\t")[0],buildMovie(line));
+                    this.movies.add(buildMovie(line));
                 }
                 readLines++;
             }
@@ -110,8 +98,7 @@ public class IndexServiceImpl implements IndexService {
             e.printStackTrace();
         }
         /*
-        for (String key : result.keySet()) {
-            Movie tempMovie = result.get(key);
+        for (Movie tempMovie : this.movies) {
             System.out.println(tempMovie);
             for (Akas aka : tempMovie.getAkas()) {
                 System.out.println("\t" + aka.getTitle());
@@ -119,7 +106,6 @@ public class IndexServiceImpl implements IndexService {
 
         }
         */
-        return result;
     }
 
     /**

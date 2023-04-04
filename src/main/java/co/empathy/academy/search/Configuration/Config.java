@@ -22,4 +22,9 @@ public class Config implements AsyncConfigurer {
         return new UserEngineImpl();
     }
 
+    @Bean
+    public IndexService indexService(ElasticLowClientImpl elasticLowClient){
+        return new IndexServiceImpl(elasticLowClient);
+    }
+
 }

@@ -9,8 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -26,6 +28,7 @@ public class IndexServiceImpl implements IndexService {
 
     private final ElasticLowClientImpl elasticLowClient;
     private List<Movie> movies = new LinkedList<>();
+    private Map<String, Rating> ratings = new HashMap<>();
 
 
     public IndexServiceImpl(ElasticLowClientImpl e) {
@@ -37,6 +40,14 @@ public class IndexServiceImpl implements IndexService {
     public CompletableFuture<String> indexAsync(long numMovies) {
         long fileSize = numMovies;
         int batches = (int) Math.ceil(fileSize / bulkSize);
+
+        readHeaders();
+        try {
+            addRatings();
+        } catch (IOException e) {
+            //handle exception
+        }
+
         for (int i = 0; i < batches; i++) {
             read();
             //Maybe we can replace this with JSON
@@ -82,12 +93,15 @@ public class IndexServiceImpl implements IndexService {
 
         int readLines = 0;
         String line;
+        Movie m;
         try {
-            readHeaders();
             while ((readLines < bulkSize) && ((line = basicsReader.readLine()) != null)) {
+
+                //We build the movie anyway so that we manage properly the lines in every fil
+                m = buildMovie(line);
                 //skip the adult ones
-                if(!(line.split("\t")[4].equals("1"))){
-                    this.movies.add(buildMovie(line));
+                if (!(m.isAdult())) {
+                    this.movies.add(m);
                 }
                 readLines++;
             }
@@ -155,10 +169,17 @@ public class IndexServiceImpl implements IndexService {
         }
         m.setGenres(split[8].toString().split(","));
         m.setAkas(addAkas(m.getTconst()));
-        m.setRating(addRating(m.getTconst()));
         m.setCrew(addCrew(m.getTconst()));
         m.setPrincipals(addPrincipals(m.getTconst()));
         m.setEpisodes(addEpisodes(m.getTconst()));
+
+        //Add the rating if existing, -1 if not
+        if (this.ratings.containsKey(m.getTconst())) {
+            m.setRating(this.ratings.get(m.getTconst()));
+        } else {
+            m.setRating(new Rating(m.getTconst(), -1, 0));
+        }
+
         return m;
     }
 
@@ -253,40 +274,38 @@ public class IndexServiceImpl implements IndexService {
     private Crew addCrew(String key) throws IOException {
         Crew crew = new Crew("id", new String[]{"No information"}, new String[]{"No information"});;
         String line;
+        crewReader.mark(200);
         if((line = crewReader.readLine())!=null){
             return crew;
         }
-        crewReader.mark(200);
         Object[] split = line.split("\t");
         if (split[0].toString().equals(key)) {
             crew.setTconst(split[0].toString());
             crew.setDirectors(split[1].toString().split(","));
             crew.setWriters(split[2].toString().split(","));
+        } else {
+            crewReader.reset();
         }
-        crewReader.reset();
         return crew;
     }
 
     /**
+     * Creates a map with all the ratings because they might be in
+     * different order than the other files
      *
-     * @param tconst Key to identify the movie
-     * @return Rating object associated to the key
      * @throws IOException Error handling for the readLine
      */
-    private Rating addRating(String tconst) throws IOException {
+    private void addRatings() throws IOException {
         //Prepare the objects
         Object[] split;
+        String key;
         double averageRating;
         int votes;
         String line;
-        Rating rating = new Rating(tconst,-1,0);
-        if((line=ratingsReader.readLine())==null){
-            return rating;
-        }
 
-        ratingsReader.mark(100);
-        split = line.split("\t");
-        if (split[0].toString().equals(tconst)) {
+        while ((line = ratingsReader.readLine()) != null) {
+            split = line.split("\t");
+            key = split[0].toString();
             try {
                 averageRating = Double.parseDouble(split[1].toString());
             } catch (NumberFormatException e) {
@@ -297,13 +316,8 @@ public class IndexServiceImpl implements IndexService {
             } catch (NumberFormatException e) {
                 votes = 0;
             }
-            rating.setAverageRating(averageRating);
-            rating.setNumVotes(votes);
+            ratings.put(key, new Rating(key, averageRating, votes));
         }
-        else {
-            ratingsReader.reset();
-        }
-        return rating;
     }
 
     /**

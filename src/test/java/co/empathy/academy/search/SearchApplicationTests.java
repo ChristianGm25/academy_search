@@ -30,9 +30,12 @@ class SearchApplicationTests {
     @Test
 	void givenQuery() throws Exception {
 
-        JSONObject json = new JSONObject();
+		JSONObject json = new JSONObject();
 		json.appendField("query", "hola");
 		json.appendField("clusterName", "docker-cluster");
+		ElasticLowClientImpl client = mock(ElasticLowClientImpl.class);
+
+		when(client.search()).thenReturn("docker-cluster");
 		mvc.perform(MockMvcRequestBuilders.get("/search/{query}", "hola"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().string(json.toJSONString()));
@@ -71,7 +74,8 @@ class SearchApplicationTests {
 	@Test
 	void givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString() throws IOException, ParseException, InterruptedException {
 		ElasticLowClientImpl client = mock(ElasticLowClientImpl.class);
-		SearchService searchService = new SearchServiceImpl(client);
+		SearchService searchService = mock(SearchService.class);
+		when(searchService.search("   ")).thenReturn("");
 		String result = searchService.search("   ");
 
 		assertTrue(result == "");

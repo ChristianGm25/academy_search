@@ -29,6 +29,8 @@ public class IndexServiceImpl implements IndexService {
     private final ElasticLowClientImpl elasticLowClient;
     private List<Movie> movies = new LinkedList<>();
     private Map<String, Rating> ratings = new HashMap<>();
+    ;
+    private Map<String, List<Akas>> akas = new HashMap<>();
 
 
     public IndexServiceImpl(ElasticLowClientImpl e) {
@@ -37,17 +39,24 @@ public class IndexServiceImpl implements IndexService {
 
     @Async
     @Override
-    public CompletableFuture<String> indexAsync(long numMovies) {
+    public CompletableFuture<String> indexAsync(long numMovies, long numAkas) {
         long fileSize = numMovies;
         int batches = (int) Math.ceil(fileSize / bulkSize);
 
+        //Skip the first line
         readHeaders();
         try {
             addRatings();
         } catch (IOException e) {
-            //handle exception
+            e.printStackTrace();
+        }
+        try {
+            addAkas(numAkas);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
+        System.out.println("Beginning movies reading");
         for (int i = 0; i < batches; i++) {
             read();
             //Maybe we can replace this with JSON
@@ -61,10 +70,11 @@ public class IndexServiceImpl implements IndexService {
         return CompletableFuture.completedFuture("Finished indexing");
     }
 
-    public void indexCreation(){
+    public void indexCreation() throws IOException {
         elasticLowClient.indexCreation();
     }
-    public void indexDeletion(){
+
+    public void indexDeletion() throws IOException {
         elasticLowClient.indexDeletion();
     }
 
@@ -109,15 +119,6 @@ public class IndexServiceImpl implements IndexService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*
-        for (Movie tempMovie : this.movies) {
-            System.out.println(tempMovie);
-            for (Akas aka : tempMovie.getAkas()) {
-                System.out.println("\t" + aka.getTitle());
-            }
-
-        }
-        */
     }
 
     /**
@@ -168,7 +169,6 @@ public class IndexServiceImpl implements IndexService {
             m.setRuntimeMinutes(-1);
         }
         m.setGenres(split[8].toString().split(","));
-        m.setAkas(addAkas(m.getTconst()));
         m.setCrew(addCrew(m.getTconst()));
         m.setPrincipals(addPrincipals(m.getTconst()));
         m.setEpisodes(addEpisodes(m.getTconst()));
@@ -180,72 +180,34 @@ public class IndexServiceImpl implements IndexService {
             m.setRating(new Rating(m.getTconst(), -1, 0));
         }
 
+        //Add the akas
+        if (this.akas.containsKey(m.getTconst())) {
+            m.setAkas(this.akas.get(m.getTconst()));
+        } else {
+            m.setAkas(new LinkedList<>());
+        }
+
         return m;
     }
 
 
     /**
+     * Puts the lists of akas in a map to be accessed by the main function
      *
-     * @param tconst Key associated to the series/movie
-     * @return List of episodes associated to the key
-     * @throws IOException Error handling for the readLine
-     */
-    private List<Episode> addEpisodes(String tconst) throws IOException{
-        Object[] split;
-        Episode episode;
-        List<Episode> tempEpisodes = new LinkedList<>();
-        String id;
-        String line;
-        if((line = episodeReader.readLine()) == null){
-            return tempEpisodes;
-        }
-        episodeReader.mark(300);
-        while ((line != null) && (id = line.split("\t")[1]).equals(tconst)) {
-            //Mark the line in case the keys do not match
-            episodeReader.mark(300);
-            split = line.split("\t");
-            episode = new Episode();
-
-            //Set attributes
-            episode.setTconst(split[0].toString());
-            episode.setParentTconst(id);
-            if(split[2].toString().equals("\\N")){
-                episode.setSeasonNumber(-1);
-            }
-            episode.setSeasonNumber(Integer.parseInt(split[2].toString()));
-            if(split[3].toString().equals("\\N")){
-                episode.setEpisodeNumber(-1);
-            }
-            episode.setSeasonNumber(Integer.parseInt(split[3].toString()));
-            tempEpisodes.add(episode);
-            line = episodeReader.readLine();
-        }
-        episodeReader.reset();
-        return tempEpisodes;
-    }
-
-    /**
-     *
-     * @param tconst Key associated to the movie
      * @return List of akas objects associated to the key
      * @throws IOException Error handling for the readLine
      */
-    public List<Akas> addAkas(String tconst) throws IOException {
-
+    public void addAkas(long numAkas) throws IOException {
         Object[] split;
         Akas aka;
         List<Akas> tempAkas = new LinkedList<>();
-        String id;
         String line = akasReader.readLine();
-        akasReader.mark(300);
-        while ((akasReader.readLine()!=null) && (id = line.split("\t")[0]).equals(tconst)) {
-            //Mark the line in case the keys do not match
-            akasReader.mark(300);
+        String prevKey = "tt0000001";
+        while ((line != null) && (!(line.split("\t")[0].equals("tt0300559")))) {
             split = line.split("\t");
             aka = new Akas();
-
             //Set attributes
-            aka.setTitleId(id);
+            aka.setTitleId(split[0].toString());
             try {
                 aka.setOrdering(Integer.parseInt(split[1].toString()));
             } catch (NumberFormatException e) {
@@ -257,37 +219,17 @@ public class IndexServiceImpl implements IndexService {
             aka.setTypes(split[5].toString().split(","));
             aka.setAttributes(split[6].toString().split(","));
             aka.setOriginalTitle(getBoolean(split[7].toString()));
-
+            prevKey = split[0].toString();
             tempAkas.add(aka);
+
             line = akasReader.readLine();
+            if (!(line.split("\t")[0].equals(prevKey))) {
+                this.akas.put(prevKey, tempAkas);
+                tempAkas = new LinkedList<>();
+            }
         }
-        akasReader.reset();
-        return tempAkas;
     }
 
-    /**
-     *
-     * @param key Key to identify the movie
-     * @return Crew object associated to the key
-     * @throws IOException Error handling for the readLine
-     */
-    private Crew addCrew(String key) throws IOException {
-        Crew crew = new Crew("id", new String[]{"No information"}, new String[]{"No information"});;
-        String line;
-        crewReader.mark(200);
-        if((line = crewReader.readLine())!=null){
-            return crew;
-        }
-        Object[] split = line.split("\t");
-        if (split[0].toString().equals(key)) {
-            crew.setTconst(split[0].toString());
-            crew.setDirectors(split[1].toString().split(","));
-            crew.setWriters(split[2].toString().split(","));
-        } else {
-            crewReader.reset();
-        }
-        return crew;
-    }
 
     /**
      * Creates a map with all the ratings because they might be in
@@ -316,10 +258,48 @@ public class IndexServiceImpl implements IndexService {
             } catch (NumberFormatException e) {
                 votes = 0;
             }
-            ratings.put(key, new Rating(key, averageRating, votes));
+            this.ratings.put(key, new Rating(key, averageRating, votes));
         }
     }
 
+    /**
+     * @param tconst Key associated to the series/movie
+     * @return List of episodes associated to the key
+     * @throws IOException Error handling for the readLine
+     */
+    private List<Episode> addEpisodes(String tconst) throws IOException {
+        Object[] split;
+        Episode episode;
+        List<Episode> tempEpisodes = new LinkedList<>();
+        String id;
+        String line;
+        if ((line = episodeReader.readLine()) == null) {
+            return tempEpisodes;
+        }
+        episodeReader.mark(300);
+        while ((line != null) && (id = line.split("\t")[1]).equals(tconst)) {
+            //Mark the line in case the keys do not match
+            episodeReader.mark(300);
+            split = line.split("\t");
+            episode = new Episode();
+
+            //Set attributes
+            episode.setTconst(split[0].toString());
+            episode.setParentTconst(id);
+            if (split[2].toString().equals("\\N")) {
+                episode.setSeasonNumber(-1);
+            }
+            episode.setSeasonNumber(Integer.parseInt(split[2].toString()));
+            if (split[3].toString().equals("\\N")) {
+                episode.setEpisodeNumber(-1);
+            }
+            episode.setSeasonNumber(Integer.parseInt(split[3].toString()));
+            tempEpisodes.add(episode);
+            line = episodeReader.readLine();
+        }
+        episodeReader.reset();
+        return tempEpisodes;
+    }
     /**
      *
      * @param tconst Key to identify the movie
@@ -359,7 +339,30 @@ public class IndexServiceImpl implements IndexService {
     }
 
     /**
-     *
+     * @param key Key to identify the movie
+     * @return Crew object associated to the key
+     * @throws IOException Error handling for the readLine
+     */
+    private Crew addCrew(String key) throws IOException {
+        Crew crew = new Crew("id", new String[]{"No information"}, new String[]{"No information"});
+        ;
+        String line;
+        crewReader.mark(200);
+        if ((line = crewReader.readLine()) != null) {
+            return crew;
+        }
+        Object[] split = line.split("\t");
+        if (split[0].toString().equals(key)) {
+            crew.setTconst(split[0].toString());
+            crew.setDirectors(split[1].toString().split(","));
+            crew.setWriters(split[2].toString().split(","));
+        } else {
+            crewReader.reset();
+        }
+        return crew;
+    }
+
+    /**
      * @param value 1 or 0 as a string
      * @return boolean value (true if 1, false if 0)
      */

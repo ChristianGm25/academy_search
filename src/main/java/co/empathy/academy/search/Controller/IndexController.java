@@ -23,24 +23,33 @@ public class IndexController {
     public ResponseEntity indexAsync(@RequestBody MultipartFile akas, @RequestBody MultipartFile basics,
                                      @RequestBody MultipartFile crew, @RequestBody MultipartFile episode,
                                      @RequestBody MultipartFile principals, @RequestBody MultipartFile ratings) {
+
         if ((basics == null) || (akas == null) || (crew == null) || (episode == null) || (principals == null) ||
                 (ratings == null)){
             return new ResponseEntity("Error in file", HttpStatus.BAD_REQUEST);
         }
-        this.indexService.setReaders(akas,basics,crew,episode,principals,ratings);
-        indexService.indexAsync(basics.getSize());
+        this.indexService.setReaders(akas, basics, crew, episode, principals, ratings);
+        indexService.indexAsync(basics.getSize(), akas.getSize());
         return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity indexCreation(){
-        indexService.indexCreation();
-        return new ResponseEntity("Index generated", HttpStatus.OK);
+    public ResponseEntity indexCreation() {
+        try {
+            indexService.indexCreation();
+            return new ResponseEntity("Index generated", HttpStatus.CREATED);
+        } catch (IOException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping
-    public ResponseEntity indexDeletion(){
-        indexService.indexDeletion();
-        return new ResponseEntity("Index deleted", HttpStatus.OK);
+    public ResponseEntity indexDeletion() {
+        try {
+            indexService.indexDeletion();
+            return new ResponseEntity("Index deleted", HttpStatus.ACCEPTED);
+        } catch (IOException e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

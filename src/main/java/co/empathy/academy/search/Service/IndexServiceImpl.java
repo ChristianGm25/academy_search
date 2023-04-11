@@ -303,8 +303,7 @@ public class IndexServiceImpl implements IndexService {
             }
             rating.setAverageRating(averageRating);
             rating.setNumVotes(votes);
-        }
-        else {
+        } else {
             ratingsReader.reset();
         }
         return rating;

@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" afterDir="false" />
-    </list>
+    <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -238,7 +229,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680598549585</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Maps version (TODO: Divide files properly)">
+      <created>1681126833409</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1681126833409</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -262,7 +260,8 @@
     <MESSAGE value="Refactor to a hashmap approach" />
     <MESSAGE value="Full TSV reading (Map version)" />
     <MESSAGE value="Mapping and async function completed (12mins version)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mapping and async function completed (12mins version)" />
+    <MESSAGE value="Maps version (TODO: Divide files properly)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Maps version (TODO: Divide files properly)" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

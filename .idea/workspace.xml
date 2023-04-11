@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="" />
+    <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/SearchServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/SearchServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +33,6 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-    <option name="RESET_MODE" value="HARD" />
     <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -56,104 +61,13 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/christiang/IdeaProjects/academy_search&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.obiscr.chatgpt.settings.ChatGPT&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
-  <component name="RunManager" selected="JUnit.IndexIMDBTest.compareStrings">
-    <configuration name="IndexIMDBTest.compareStrings" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="search" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="co.empathy.academy.search.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="co.empathy.academy.search" />
-      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.IndexIMDBTest" />
-      <option name="METHOD_NAME" value="compareStrings" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SearchApplicationTests.givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="search" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="co.empathy.academy.search.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="co.empathy.academy.search" />
-      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.SearchApplicationTests" />
-      <option name="METHOD_NAME" value="givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UsersTest.givenUser_whenInsert_thenInsert" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="search" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="co.empathy.academy.search.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="co.empathy.academy.search" />
-      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.UsersTest" />
-      <option name="METHOD_NAME" value="givenUser_whenInsert_thenInsert" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UsersTest.notGivenUser_whenInsert_thenError" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="search" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="co.empathy.academy.search.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="co.empathy.academy.search" />
-      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.UsersTest" />
-      <option name="METHOD_NAME" value="notGivenUser_whenInsert_thenError" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="UsersTest.userNull_whenInsert_thenError" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="search" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="co.empathy.academy.search.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="co.empathy.academy.search" />
-      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.UsersTest" />
-      <option name="METHOD_NAME" value="userNull_whenInsert_thenError" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="JUnit.IndexIMDBTest.compareStrings" />
-        <item itemvalue="JUnit.UsersTest.userNull_whenInsert_thenError" />
-        <item itemvalue="JUnit.UsersTest.notGivenUser_whenInsert_thenError" />
-        <item itemvalue="JUnit.UsersTest.givenUser_whenInsert_thenInsert" />
-        <item itemvalue="JUnit.SearchApplicationTests.givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="" />
+      <changelist id="f46255ef-cdb4-4dac-9ee2-fa59d82e02a8" name="Changes" comment="" />
       <created>1678953880093</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -222,21 +136,7 @@
       <option name="project" value="LOCAL" />
       <updated>1679993597190</updated>
     </task>
-    <task id="LOCAL-00010" summary="Mapping and async function completed (12mins version)">
-      <created>1680598549585</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1680598549585</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Maps version (TODO: Divide files properly)">
-      <created>1681126833409</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1681126833409</updated>
-    </task>
-    <option name="localTasksCounter" value="12" />
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -259,9 +159,7 @@
     <MESSAGE value="Added ratings reader (TODO: Tests)" />
     <MESSAGE value="Refactor to a hashmap approach" />
     <MESSAGE value="Full TSV reading (Map version)" />
-    <MESSAGE value="Mapping and async function completed (12mins version)" />
-    <MESSAGE value="Maps version (TODO: Divide files properly)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Maps version (TODO: Divide files properly)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Full TSV reading (Map version)" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

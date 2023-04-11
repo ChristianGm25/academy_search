@@ -29,7 +29,7 @@ public class IndexController {
             return new ResponseEntity("Error in file", HttpStatus.BAD_REQUEST);
         }
         this.indexService.setReaders(akas, basics, crew, episode, principals, ratings);
-        indexService.indexAsync(basics.getSize(), akas.getSize());
+        indexService.indexAsync(basics.getSize());
         return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
     }
 

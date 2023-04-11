@@ -50,10 +50,11 @@ public class IndexServiceImpl implements IndexService {
         return CompletableFuture.completedFuture("Finished indexing");
     }
 
-    public void indexCreation(){
+    public void indexCreation() throws IOException {
         elasticLowClient.indexCreation();
     }
-    public void indexDeletion(){
+
+    public void indexDeletion() throws IOException {
         elasticLowClient.indexDeletion();
     }
 

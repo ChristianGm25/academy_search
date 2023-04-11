@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 public interface IndexService {
     void read();
 
-    CompletableFuture<String> indexAsync(long numMovies, long numAkas);
+    CompletableFuture<String> indexAsync(long numMovies);
 
     void indexCreation() throws IOException;
 

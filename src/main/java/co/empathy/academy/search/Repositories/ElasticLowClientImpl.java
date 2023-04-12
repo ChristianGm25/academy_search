@@ -44,8 +44,7 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
         SearchRequest searchRequest = SearchRequest.of(p -> p
                 .index(indexName)
-                .size(50)
-                .sort(sort));
+                .size(50));
 
         List<Movie> movies = new LinkedList<>();
         try {

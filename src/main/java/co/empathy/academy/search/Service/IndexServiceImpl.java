@@ -289,7 +289,7 @@ public class IndexServiceImpl implements IndexService {
             return rating;
         }
         split = line.split("\t");
-        System.out.println("Rating: " + split[0] + " Basics: " + tconst);
+        //System.out.println("Rating: " + split[0] + " Basics: " + tconst);
         if (split[0].toString().equals(tconst)) {
             try {
                 averageRating = Double.parseDouble(split[1].toString());

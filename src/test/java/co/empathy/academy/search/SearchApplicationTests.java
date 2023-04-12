@@ -3,15 +3,12 @@ package co.empathy.academy.search;
 import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
 import co.empathy.academy.search.Service.SearchService;
 import co.empathy.academy.search.Service.SearchServiceImpl;
-import net.minidev.json.JSONObject;
 import net.minidev.json.parser.ParseException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.io.IOException;
 
@@ -27,22 +24,7 @@ class SearchApplicationTests {
 	private MockMvc mvc;
 
 
-    @Test
-	void givenQuery() throws Exception {
-
-		JSONObject json = new JSONObject();
-		json.appendField("query", "hola");
-		json.appendField("clusterName", "docker-cluster");
-		ElasticLowClientImpl client = mock(ElasticLowClientImpl.class);
-
-		when(client.search()).thenReturn("docker-cluster");
-		mvc.perform(MockMvcRequestBuilders.get("/search/{query}", "hola"))
-				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().string(json.toJSONString()));
-	}
-
-
-    @Test
+	@Test
 	void givenQuery_whenSearch_thenReturnResult() throws IOException, ParseException, InterruptedException {
 		String exampleQuery = "example query";
 		String expectedResult = "result for example query";

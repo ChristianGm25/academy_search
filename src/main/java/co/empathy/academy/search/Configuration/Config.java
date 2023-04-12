@@ -1,6 +1,7 @@
 package co.empathy.academy.search.Configuration;
 
 import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
+import co.empathy.academy.search.Repositories.QueryEngineImpl;
 import co.empathy.academy.search.Service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,13 +19,18 @@ public class Config implements AsyncConfigurer {
     }
 
     @Bean
-    public UserEngine userEngine (){
+    public UserEngine userEngine() {
         return new UserEngineImpl();
     }
 
     @Bean
-    public IndexService indexService(ElasticLowClientImpl elasticLowClient){
+    public IndexService indexService(ElasticLowClientImpl elasticLowClient) {
         return new IndexServiceImpl(elasticLowClient);
+    }
+
+    @Bean
+    public QueryEngineImpl queryEngine(ElasticLowClientImpl elasticLowClient) {
+        return new QueryEngineImpl(elasticLowClient);
     }
 
 }

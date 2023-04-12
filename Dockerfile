@@ -1,5 +1,15 @@
-# syntax=docker/dockerfile:1
+#
+# Build stage
+#
+FROM maven AS build
+COPY src /home/app/src
+COPY pom.xml /home/app/
+RUN mvn -f /home/app clean package
+
+#
+# Package stage
+#
 FROM openjdk
-WORKDIR /docker
-COPY target/search-0.0.1-SNAPSHOT.jar target/search-0.0.1-SNAPSHOT.jar
-CMD ["java","-jar","target/search-0.0.1-SNAPSHOT.jar"]
+COPY --from=build /home/app/target/search-0.0.1-SNAPSHOT.jar /usr/local/lib/search.jar
+EXPOSE 8080
+ENTRYPOINT ["java","-jar","/usr/local/lib/search.jar"]

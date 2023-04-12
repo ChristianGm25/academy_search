@@ -1,23 +1,25 @@
-version: "3.9"
+version: '2.1'
 services:
-
   elasticsearch:
-    image: elasticsearch:7.17.2
+    image: "christiangm25/elasticsearch_indexed:elasticsearch_indexed"
+    hostname: "elasticsearch"
+    container_name: elasticsearch-docker
     environment:
-      - discovery.type=single-node
+      - "discovery.type=single-node"
     ports:
       - "9200:9200"
-      - "9300:9300"
-    networks:
-      - elastic
+    healthcheck:
+      test: [ "CMD", "curl", "-u", "elastic:searchPathRules", "-f", "localhost:9200" ]
+      interval: 30s
+      retries: 10
 
-  search_api:
-    build: .
+  searchapi:
+    container_name: searchApi
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    networks:
-      - elastic
-
-networks:
-   elastic:
-     driver: bridge
+    depends_on:
+      elasticsearch:
+        condition: service_healthy

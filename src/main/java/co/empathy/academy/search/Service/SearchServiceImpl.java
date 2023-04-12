@@ -20,4 +20,5 @@ public class SearchServiceImpl implements SearchService{
     public String search(String query) throws IOException, ParseException, InterruptedException {
         return elasticLowClient.search();
     }
+
 }

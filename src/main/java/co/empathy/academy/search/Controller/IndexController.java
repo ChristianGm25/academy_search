@@ -2,8 +2,12 @@ package co.empathy.academy.search.Controller;
 
 import co.empathy.academy.search.Configuration.ElasticSearchConfiguration;
 import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
+import co.empathy.academy.search.Repositories.QueryEngineImpl;
 import co.empathy.academy.search.Service.IndexService;
 import co.empathy.academy.search.Service.IndexServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
 @RestController
 @RequestMapping("/movies")
 public class IndexController {
@@ -19,13 +24,31 @@ public class IndexController {
     ElasticLowClientImpl elasticLowClient = new ElasticLowClientImpl(new ElasticSearchConfiguration());
     @Autowired
     IndexService indexService = new IndexServiceImpl(elasticLowClient);
+
+    @Autowired
+    QueryEngineImpl queriesEngine = new QueryEngineImpl(elasticLowClient);
+
+    @Operation(summary = "Retrieve several movies without any filters")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List successfully retrieved"),
+    })
+    @GetMapping
+    public ResponseEntity searchMatchAll() {
+        return new ResponseEntity(elasticLowClient.getDocuments(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Index the files")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Files accepted and asynchronous call started"),
+            @ApiResponse(responseCode = "400", description = "Some files have errors"),
+    })
     @PostMapping
     public ResponseEntity indexAsync(@RequestBody MultipartFile akas, @RequestBody MultipartFile basics,
                                      @RequestBody MultipartFile crew, @RequestBody MultipartFile episode,
                                      @RequestBody MultipartFile principals, @RequestBody MultipartFile ratings) {
 
         if ((basics == null) || (akas == null) || (crew == null) || (episode == null) || (principals == null) ||
-                (ratings == null)){
+                (ratings == null)) {
             return new ResponseEntity("Error in file", HttpStatus.BAD_REQUEST);
         }
         this.indexService.setReaders(akas, basics, crew, episode, principals, ratings);
@@ -33,6 +56,11 @@ public class IndexController {
         return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
     }
 
+    @Operation(summary = "Creates an index in elasticsearch")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Index generated"),
+            @ApiResponse(responseCode = "400", description = "Error creating an index"),
+    })
     @PutMapping
     public ResponseEntity indexCreation() {
         try {
@@ -43,6 +71,12 @@ public class IndexController {
         }
     }
 
+
+    @Operation(summary = "Deletes the index if existing")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "202", description = "Index deletion successfully done"),
+            @ApiResponse(responseCode = "400", description = "Error deleting the index"),
+    })
     @DeleteMapping
     public ResponseEntity indexDeletion() {
         try {

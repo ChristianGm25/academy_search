@@ -13,6 +13,7 @@
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Rating.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Crew.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Akas.java
+/Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Model/Principals.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Exceptions/ExceptionHandler.java
 /Users/christiang/IdeaProjects/academy_search/src/main/java/co/empathy/academy/search/Service/UserService.java

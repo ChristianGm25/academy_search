@@ -9,8 +9,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -26,6 +28,7 @@ public class IndexServiceImpl implements IndexService {
 
     private final ElasticLowClientImpl elasticLowClient;
     private List<Movie> movies = new LinkedList<>();
+    private Map<String, Rating> ratings = new HashMap<>();
 
 
     public IndexServiceImpl(ElasticLowClientImpl e) {
@@ -37,6 +40,11 @@ public class IndexServiceImpl implements IndexService {
     public CompletableFuture<String> indexAsync(long numMovies) {
         long fileSize = numMovies;
         int batches = (int) Math.ceil(fileSize / bulkSize);
+        try {
+            addRating();
+        } catch (IOException e) {
+            System.out.println("Error reading ratings");
+        }
         for (int i = 0; i < batches; i++) {
             read();
             //Maybe we can replace this with JSON
@@ -158,21 +166,64 @@ public class IndexServiceImpl implements IndexService {
         }
         m.setGenres(split[8].toString().split(","));
         m.setAkas(addAkas(m.getTconst()));
-        m.setRating(addRating(m.getTconst()));
+        if (this.ratings.containsKey(m.getTconst())) {
+            m.setRating(this.ratings.get(m.getTconst()));
+        } else {
+            m.setRating(new Rating(m.getTconst(), -1, 0));
+        }
         m.setCrew(addCrew(m.getTconst()));
         m.setPrincipals(addPrincipals(m.getTconst()));
         m.setEpisodes(addEpisodes(m.getTconst()));
         return m;
     }
 
+    /**
+     * Stores in a map all the ratings to assign properly to the basics
+     *
+     * @throws IOException Error handling for the readLine
+     */
+    private void addRating() throws IOException {
+
+        //Prepare the objects
+        Object[] split;
+        double averageRating;
+        int votes;
+        String line;
+
+        while ((line = ratingsReader.readLine()) != null) {
+            split = line.split("\t");
+            try {
+                averageRating = Double.parseDouble(split[1].toString());
+            } catch (NumberFormatException e) {
+                averageRating = -1.0;
+            }
+            try {
+                votes = Integer.parseInt(split[2].toString());
+            } catch (NumberFormatException e) {
+                votes = 0;
+            }
+            Rating rating = new Rating(split[0].toString(), averageRating, votes);
+            this.ratings.put(rating.getTconst(), rating);
+        }
+
+    }
+
+
+    public boolean lesserID(String fileID, String basicsID) {
+        int idFile = Integer.parseInt(fileID.split("t")[2]);
+        int idBasics = Integer.parseInt(basicsID.split("t")[2]);
+        if (idFile < idBasics) {
+            return true;
+        }
+        return false;
+    }
 
     /**
-     *
      * @param tconst Key associated to the series/movie
      * @return List of episodes associated to the key
      * @throws IOException Error handling for the readLine
      */
-    private List<Episode> addEpisodes(String tconst) throws IOException{
+    private List<Episode> addEpisodes(String tconst) throws IOException {
         Object[] split;
         Episode episode;
         List<Episode> tempEpisodes = new LinkedList<>();
@@ -270,44 +321,6 @@ public class IndexServiceImpl implements IndexService {
         return crew;
     }
 
-    /**
-     *
-     * @param tconst Key to identify the movie
-     * @return Rating object associated to the key
-     * @throws IOException Error handling for the readLine
-     */
-    private Rating addRating(String tconst) throws IOException {
-        //Prepare the objects
-        Object[] split;
-        double averageRating;
-        int votes;
-        String line;
-        Rating rating = new Rating(tconst, -1, 0);
-        ratingsReader.mark(100);
-
-        if ((line = ratingsReader.readLine()) == null) {
-            return rating;
-        }
-        split = line.split("\t");
-        //System.out.println("Rating: " + split[0] + " Basics: " + tconst);
-        if (split[0].toString().equals(tconst)) {
-            try {
-                averageRating = Double.parseDouble(split[1].toString());
-            } catch (NumberFormatException e) {
-                averageRating = -1.0;
-            }
-            try {
-                votes = Integer.parseInt(split[2].toString());
-            } catch (NumberFormatException e) {
-                votes = 0;
-            }
-            rating.setAverageRating(averageRating);
-            rating.setNumVotes(votes);
-        } else {
-            ratingsReader.reset();
-        }
-        return rating;
-    }
 
     /**
      *

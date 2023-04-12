@@ -40,18 +40,18 @@ public class IndexController {
     @Operation(summary = "Index the files")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Files accepted and asynchronous call started"),
-            @ApiResponse(responseCode = "400", description = "Some files have errors"),
+            @ApiResponse(responseCode = "406", description = "Some files have errors and are not accepted"),
     })
     @PostMapping
     public ResponseEntity indexAsync(@RequestBody MultipartFile akas, @RequestBody MultipartFile basics,
-                                     @RequestBody MultipartFile crew, @RequestBody MultipartFile episode,
+                                     @RequestBody MultipartFile crew, @RequestBody MultipartFile episodes,
                                      @RequestBody MultipartFile principals, @RequestBody MultipartFile ratings) {
 
-        if ((basics == null) || (akas == null) || (crew == null) || (episode == null) || (principals == null) ||
+        if ((basics == null) || (akas == null) || (crew == null) || (episodes == null) || (principals == null) ||
                 (ratings == null)) {
-            return new ResponseEntity("Error in file", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("Error in file", HttpStatus.NOT_ACCEPTABLE);
         }
-        this.indexService.setReaders(akas, basics, crew, episode, principals, ratings);
+        this.indexService.setReaders(akas, basics, crew, episodes, principals, ratings);
         indexService.indexAsync(basics.getSize());
         return new ResponseEntity("File accepted (QUEUED)", HttpStatus.OK);
     }

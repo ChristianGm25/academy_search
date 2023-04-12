@@ -5,8 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="Dockercompose and initial query done for frontend">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Configuration/my_index_settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/my_index_mapping.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Configuration/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Configuration/Config.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/SearchApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/SearchApplicationTests.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -62,6 +70,11 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

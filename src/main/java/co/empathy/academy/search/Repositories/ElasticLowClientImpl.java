@@ -7,13 +7,11 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
-import co.elastic.clients.elasticsearch.indices.CreateIndexResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.empathy.academy.search.Configuration.ElasticSearchConfiguration;
 import co.empathy.academy.search.Model.Movie;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -67,10 +65,21 @@ public class ElasticLowClientImpl implements ElasticLowClient {
     @Override
     public void indexCreation() throws IOException {
         try {
-            final String assetJsonSource = "src/main/java/co/empathy/academy/search/Configuration/my_index_settings.json";
-            InputStream input = new FileInputStream(assetJsonSource);
-            CreateIndexResponse request = elasticSearchConfiguration.elasticsearchClient().indices().create(f ->
-                    f.index(indexName).withJson(input));
+            InputStream mapping = getClass().getClassLoader().getResourceAsStream("my_index_mapping.json");
+            InputStream analyzer = getClass().getClassLoader().getResourceAsStream("custom_analyzer.json");
+
+            //Create the index
+            elasticSearchConfiguration.elasticsearchClient().indices().create(f -> f.index(indexName));
+
+            //Close it and add the mapping
+            elasticSearchConfiguration.elasticsearchClient().indices().close(f -> f.index(indexName));
+            elasticSearchConfiguration.elasticsearchClient().indices().putMapping(f -> f.index(indexName).withJson(mapping));
+            //Add the analyzer
+            elasticSearchConfiguration.elasticsearchClient().indices().putSettings(f -> f.index(indexName).withJson(analyzer));
+            //Open the index again
+            elasticSearchConfiguration.elasticsearchClient().indices().open(f -> f.index(indexName));
+
+
         } catch (IOException e) {
             throw new IOException("Failed to create an index (Elastic not running)");
         }

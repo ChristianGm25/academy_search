@@ -37,6 +37,11 @@ public class IndexController {
         return new ResponseEntity(elasticLowClient.getDocuments(), HttpStatus.OK);
     }
 
+    @GetMapping("/{query}")
+    public ResponseEntity searchQuery(@PathVariable String query) {
+        return new ResponseEntity(elasticLowClient.getDocumentsQuery(query), HttpStatus.OK);
+    }
+
     @Operation(summary = "Index the files")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Files accepted and asynchronous call started"),

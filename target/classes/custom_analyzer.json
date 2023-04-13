@@ -13,6 +13,8 @@
             "lowercase",
             "asciifolding",
             "english_stop"
+
+
           ]
         }
       },

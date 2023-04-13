@@ -2,12 +2,17 @@ package co.empathy.academy.search.Repositories;
 
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
+import co.elastic.clients.json.JsonData;
 import co.empathy.academy.search.Configuration.ElasticSearchConfiguration;
 import co.empathy.academy.search.Model.Movie;
 import org.springframework.stereotype.Component;
@@ -38,10 +43,47 @@ public class ElasticLowClientImpl implements ElasticLowClient {
     }
 
     @Override
-    public List<Movie> getDocuments() {
+    public List<Movie> getDocumentsQuery(String query) {
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
+
+        MultiMatchQuery multiMatchQuery = MultiMatchQuery.of(p -> p.fields("primaryTitle", "originalTitle").query(query));
+        List<Movie> movies = new LinkedList<>();
+        List<Query> queries = new LinkedList<>();
+        Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
+        queries.add(multiMatchQuery._toQuery());
+        queries.add(beforeThisYear);
+        Query bulkQueries = BoolQuery.of(p -> p.filter(queries))._toQuery();
         SearchRequest searchRequest = SearchRequest.of(p -> p
                 .index(indexName)
+                .query(bulkQueries)
+                .sort(sort)
+                .size(50));
+        try {
+            SearchResponse searchResponse = elasticSearchConfiguration.elasticsearchClient().search(searchRequest, Movie.class);
+
+            List<Hit<Movie>> hits = searchResponse.hits().hits();
+
+            for (Hit object : hits) {
+                movies.add((Movie) object.source());
+            }
+            return movies;
+        } catch (IOException e) {
+            System.out.println("There was an error retrieving the movies");
+        }
+        return movies;
+    }
+
+    @Override
+    public List<Movie> getDocuments() {
+        SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
+        List<Query> queries = new LinkedList<>();
+        Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
+        queries.add(beforeThisYear);
+        Query bulkQueries = BoolQuery.of(p -> p.filter(queries))._toQuery();
+        SearchRequest searchRequest = SearchRequest.of(p -> p
+                .index(indexName)
+                .query(bulkQueries)
+                .sort(sort)
                 .size(50));
 
         List<Movie> movies = new LinkedList<>();
@@ -49,10 +91,10 @@ public class ElasticLowClientImpl implements ElasticLowClient {
             SearchResponse searchResponse = elasticSearchConfiguration
                     .elasticsearchClient().search(searchRequest,
                             Movie.class);
-            List<Hit> hits = searchResponse.hits().hits();
+            List<Hit<Movie>> hits = searchResponse.hits().hits();
 
-            for (Hit object : hits) {
-                movies.add((Movie) object.source());
+            for (Hit<Movie> movie : hits) {
+                movies.add(movie.source());
             }
             return movies;
         } catch (IOException e) {
@@ -78,7 +120,6 @@ public class ElasticLowClientImpl implements ElasticLowClient {
             elasticSearchConfiguration.elasticsearchClient().indices().putSettings(f -> f.index(indexName).withJson(analyzer));
             //Open the index again
             elasticSearchConfiguration.elasticsearchClient().indices().open(f -> f.index(indexName));
-
 
         } catch (IOException e) {
             throw new IOException("Failed to create an index (Elastic not running)");

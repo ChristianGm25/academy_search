@@ -12,6 +12,8 @@ public interface ElasticLowClient {
 
     List<Movie> getDocuments();
 
+    List<Movie> getDocumentsQuery(String query);
+
     void indexCreation() throws IOException;
 
     void indexDeletion() throws IOException;

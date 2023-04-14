@@ -94,6 +94,8 @@ public class IndexServiceImpl implements IndexService {
         try {
             readHeaders();
             String lineAkas = akasReader.readLine();
+            String lineCrew = crewReader.readLine();
+            String linePrincipals = principalsReader.readLine();
             while ((readLines < bulkSize) && ((line = basicsReader.readLine()) != null)) {
                 m = buildMovie(line);
                 setRatings(m);
@@ -109,6 +111,28 @@ public class IndexServiceImpl implements IndexService {
                         lineAkas = akasReader.readLine();
                     }
                 }
+
+                //Crew reading
+                if (lesserID(lineCrew.split("\t")[0], "tt2701228")) {
+                    while (lesserID(lineCrew.split("\t")[0], m.getTconst()) && lineCrew != null) {
+                        lineCrew = crewReader.readLine();
+                    }
+                    if (lineCrew.split("\t")[0].equals(m.getTconst())) {
+                        m.setCrew(addCrew(lineCrew.split("\t")));
+                        lineCrew = crewReader.readLine();
+                    }
+                }
+
+                while (lesserID(linePrincipals.split("\t")[0], m.getTconst()) && linePrincipals != null) {
+
+                    linePrincipals = principalsReader.readLine();
+                }
+                while (linePrincipals.split("\t")[0].equals(m.getTconst())) {
+                    m.getPrincipals().add(addPrincipals(linePrincipals.split("\t")));
+                    linePrincipals = principalsReader.readLine();
+                }
+
+
                 //skip the adult ones
                 if (!m.isAdult()) {
                     this.movies.add(m);
@@ -291,65 +315,38 @@ public class IndexServiceImpl implements IndexService {
     }
 
     /**
-     *
-     * @param key Key to identify the movie
-     * @return Crew object associated to the key
+     * @return Crew object associated to the movie
      * @throws IOException Error handling for the readLine
      */
-    private Crew addCrew(String key) throws IOException {
-        Crew crew = new Crew("id", new String[]{"No information"}, new String[]{"No information"});;
-        String line;
-        if((line = crewReader.readLine())!=null){
-            return crew;
-        }
-        crewReader.mark(200);
-        Object[] split = line.split("\t");
-        if (split[0].toString().equals(key)) {
-            crew.setTconst(split[0].toString());
-            crew.setDirectors(split[1].toString().split(","));
-            crew.setWriters(split[2].toString().split(","));
-        }
-        crewReader.reset();
+    private Crew addCrew(String[] split) throws IOException {
+        Crew crew = new Crew(split[0], new String[]{"No information"}, new String[]{"No information"});
+        ;
+        crew.setDirectors(split[1].toString().split(","));
+        crew.setWriters(split[2].toString().split(","));
         return crew;
     }
 
 
     /**
      *
-     * @param tconst Key to identify the movie
      * @return List of the principals associated to the key
      * @throws IOException Error handling for the readLine
      */
-    private List<Principals> addPrincipals(String tconst) throws IOException {
-        Object[] split;
-        List<Principals> tempPrincipals = new LinkedList<>();
-        Principals principal;
+    private Principals addPrincipals(String[] split) throws IOException {
 
-        String line = principalsReader.readLine();
-        String id;
-        principalsReader.mark(200);
-        while ((id = line.split("\t")[0]).equals(tconst) && !(line.equals(""))) {
-            principalsReader.mark(200);
-            split = line.split("\t");
-            //Create new object to add
-            principal = new Principals();
-            principal.setTconst(id);
-            try {
-                principal.setOrdering(Integer.parseInt(split[1].toString()));
-            } catch (NumberFormatException e) {
-                principal.setOrdering(-1);
-            }
-            principal.setNconst(split[2].toString());
-            principal.setCategory(split[3].toString());
-            principal.setJob(split[4].toString());
-            principal.setCharacters(split[5].toString());
-
-            tempPrincipals.add(principal);
-
-            line = akasReader.readLine();
+        Principals principal = new Principals();
+        ;
+        principal.setTconst(split[0]);
+        try {
+            principal.setOrdering(Integer.parseInt(split[1].toString()));
+        } catch (NumberFormatException e) {
+            principal.setOrdering(-1);
         }
-        principalsReader.reset();
-        return tempPrincipals;
+        principal.setNconst(split[2].toString());
+        principal.setCategory(split[3].toString());
+        principal.setJob(split[4].toString());
+        principal.setCharacters(split[5].toString());
+        return principal;
     }
 
     /**

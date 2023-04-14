@@ -98,14 +98,16 @@ public class IndexServiceImpl implements IndexService {
                 m = buildMovie(line);
                 setRatings(m);
 
-                //TODO: Why does it index 6m and not 8m
-                while (lesserID(lineAkas.split("\t")[0], m.getTconst()) && lineAkas != null) {
-                    lineAkas = akasReader.readLine();
-                }
-
-                while (lineAkas.split("\t")[0].equals(m.getTconst())) {
-                    m.getAkas().add(addAkas(lineAkas.split("\t")));
-                    lineAkas = akasReader.readLine();
+                // This condition is necessary because from this point the akas file is unordered, has no proper syntax
+                // and the data are episodes of series
+                if (lesserID(lineAkas.split("\t")[0], "tt2643120")) {
+                    while (lesserID(lineAkas.split("\t")[0], m.getTconst()) && lineAkas != null) {
+                        lineAkas = akasReader.readLine();
+                    }
+                    while (lineAkas.split("\t")[0].equals(m.getTconst())) {
+                        m.getAkas().add(addAkas(lineAkas.split("\t")));
+                        lineAkas = akasReader.readLine();
+                    }
                 }
                 //skip the adult ones
                 if (!m.isAdult()) {

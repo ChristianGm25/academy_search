@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 public interface IndexService {
-    void read();
+    void read() throws IOException;
 
     CompletableFuture<String> indexAsync(long numMovies);
 

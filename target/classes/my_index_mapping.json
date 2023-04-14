@@ -1,16 +1,20 @@
 {
     "properties": {
       "tconst": {
-        "type": "text"
+        "type": "keyword"
       },
       "titleType": {
-        "type": "text"
+        "type": "keyword"
       },
       "primaryTitle": {
-        "type": "text"
+        "type": "text",
+        "analyzer": "custom_analyzer",
+        "search_analyzer": "custom_analyzer"
       },
       "originalTitle": {
-        "type": "text"
+        "type": "text",
+        "analyzer": "custom_analyzer",
+        "search_analyzer": "custom_analyzer"
       },
       "isAdult": {
         "type": "boolean"
@@ -25,7 +29,7 @@
         "type": "integer"
       },
       "genres": {
-        "type": "text"
+        "type": "keyword"
       },
       "akas": {
         "type": "nested",
@@ -107,19 +111,11 @@
           }
         }
       },
-      "rating": {
-        "type": "nested",
-        "properties": {
-          "tconst": {
-            "type": "text"
-          },
-          "averageRating": {
-            "type": "integer"
-          },
-          "numVotes": {
-            "type": "integer"
-          }
-        }
+      "averageRating": {
+        "type": "integer"
+      },
+      "numVotes": {
+        "type": "integer"
       }
     }
 }

@@ -115,9 +115,9 @@ public class ElasticLowClientImpl implements ElasticLowClient {
 
             //Close it and add the mapping
             elasticSearchConfiguration.elasticsearchClient().indices().close(f -> f.index(indexName));
-            elasticSearchConfiguration.elasticsearchClient().indices().putMapping(f -> f.index(indexName).withJson(mapping));
-            //Add the analyzer
             elasticSearchConfiguration.elasticsearchClient().indices().putSettings(f -> f.index(indexName).withJson(analyzer));
+            //Add the analyzer
+            elasticSearchConfiguration.elasticsearchClient().indices().putMapping(f -> f.index(indexName).withJson(mapping));
             //Open the index again
             elasticSearchConfiguration.elasticsearchClient().indices().open(f -> f.index(indexName));
 

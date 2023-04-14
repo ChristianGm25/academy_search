@@ -46,9 +46,9 @@ public class IndexServiceImpl implements IndexService {
             System.out.println("Error reading ratings");
         }
         for (int i = 0; i < batches; i++) {
-            read();
-            //Maybe we can replace this with JSON
+
             try {
+                read();
                 elasticLowClient.indexMovies(this.movies);
             } catch (IOException e) {
                 System.out.print("Error indexing");
@@ -83,19 +83,30 @@ public class IndexServiceImpl implements IndexService {
 
 
     /**
-     *
-     * @return  Map containing bulkSize movies
+     * @return Map containing bulkSize movies
      */
     @Override
-    public void read() {
+    public void read() throws IOException {
 
         int readLines = 0;
         String line;
         Movie m;
         try {
             readHeaders();
+            String lineAkas = akasReader.readLine();
             while ((readLines < bulkSize) && ((line = basicsReader.readLine()) != null)) {
                 m = buildMovie(line);
+                setRatings(m);
+
+                //TODO: Why does it index 6m and not 8m
+                while (lesserID(lineAkas.split("\t")[0], m.getTconst()) && lineAkas != null) {
+                    lineAkas = akasReader.readLine();
+                }
+
+                while (lineAkas.split("\t")[0].equals(m.getTconst())) {
+                    m.getAkas().add(addAkas(lineAkas.split("\t")));
+                    lineAkas = akasReader.readLine();
+                }
                 //skip the adult ones
                 if (!m.isAdult()) {
                     this.movies.add(m);
@@ -106,15 +117,16 @@ public class IndexServiceImpl implements IndexService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        /*
-        for (Movie tempMovie : this.movies) {
-            System.out.println(tempMovie);
-            for (Akas aka : tempMovie.getAkas()) {
-                System.out.println("\t" + aka.getTitle());
-            }
+    }
 
+    public void setRatings(Movie m) {
+        if (this.ratings.containsKey(m.getTconst())) {
+            m.setAverageRating(this.ratings.get(m.getTconst()).getAverageRating());
+            m.setNumVotes(this.ratings.get(m.getTconst()).getNumVotes());
+        } else {
+            m.setAverageRating(-1);
+            m.setNumVotes(0);
         }
-        */
     }
 
     /**
@@ -139,41 +151,36 @@ public class IndexServiceImpl implements IndexService {
      * @throws IOException Error handling for the readLine
      */
     public Movie buildMovie(String line) throws IOException {
-        Object[] split;
-
+        String[] split;
         Movie m = new Movie();
         split = line.split("\t");
-        m.setTconst(split[0].toString());
-        m.setTitleType(split[1].toString());
-        m.setPrimaryTitle(split[2].toString());
-        m.setOriginalTitle(split[3].toString());
-        m.setAdult(getBoolean(split[4].toString()));
+        m.setTconst(split[0]);
+        m.setTitleType(split[1]);
+        m.setPrimaryTitle(split[2]);
+        m.setOriginalTitle(split[3]);
+        m.setAdult(getBoolean(split[4]));
         try {
-            m.setStartYear(Integer.parseInt(split[5].toString()));
+            m.setStartYear(Integer.parseInt(split[5]));
         } catch (NumberFormatException e) {
             m.setStartYear(-1);
         }
 
         try {
-            m.setEndYear(Integer.parseInt(split[6].toString()));
+            m.setEndYear(Integer.parseInt(split[6]));
         } catch (NumberFormatException e) {
             m.setEndYear(-1);
         }
         try {
-            m.setRuntimeMinutes(Integer.parseInt(split[7].toString()));
+            m.setRuntimeMinutes(Integer.parseInt(split[7]));
         } catch (NumberFormatException e) {
             m.setRuntimeMinutes(-1);
         }
-        m.setGenres(split[8].toString().split(","));
-        m.setAkas(addAkas(m.getTconst()));
-        if (this.ratings.containsKey(m.getTconst())) {
-            m.setRating(this.ratings.get(m.getTconst()));
-        } else {
-            m.setRating(new Rating(m.getTconst(), -1, 0));
-        }
-        m.setCrew(addCrew(m.getTconst()));
-        m.setPrincipals(addPrincipals(m.getTconst()));
-        m.setEpisodes(addEpisodes(m.getTconst()));
+        m.setGenres(split[8].split(","));
+
+        m.setAkas(new LinkedList<Akas>());
+        m.setCrew(new Crew());
+        m.setPrincipals(new LinkedList<Principals>());
+        m.setEpisodes(new LinkedList<Episode>());
         return m;
     }
 
@@ -259,43 +266,26 @@ public class IndexServiceImpl implements IndexService {
 
     /**
      *
-     * @param tconst Key associated to the movie
      * @return List of akas objects associated to the key
      * @throws IOException Error handling for the readLine
      */
-    public List<Akas> addAkas(String tconst) throws IOException {
+    public Akas addAkas(String[] split) throws IOException {
 
-        Object[] split;
-        Akas aka;
-        List<Akas> tempAkas = new LinkedList<>();
-        String id;
-        String line = akasReader.readLine();
-        akasReader.mark(300);
-        while ((akasReader.readLine()!=null) && (id = line.split("\t")[0]).equals(tconst)) {
-            //Mark the line in case the keys do not match
-            akasReader.mark(300);
-            split = line.split("\t");
-            aka = new Akas();
-
-            //Set attributes
-            aka.setTitleId(id);
-            try {
-                aka.setOrdering(Integer.parseInt(split[1].toString()));
-            } catch (NumberFormatException e) {
-                aka.setOrdering(-1);
-            }
-            aka.setTitle(split[2].toString());
-            aka.setRegion(split[3].toString());
-            aka.setLanguage(split[4].toString());
-            aka.setTypes(split[5].toString().split(","));
-            aka.setAttributes(split[6].toString().split(","));
-            aka.setOriginalTitle(getBoolean(split[7].toString()));
-
-            tempAkas.add(aka);
-            line = akasReader.readLine();
+        Akas aka = new Akas();
+        //Set attributes
+        aka.setTitleId(split[0]);
+        try {
+            aka.setOrdering(Integer.parseInt(split[1]));
+        } catch (NumberFormatException e) {
+            aka.setOrdering(-1);
         }
-        akasReader.reset();
-        return tempAkas;
+        aka.setTitle(split[2]);
+        aka.setRegion(split[3]);
+        aka.setLanguage(split[4]);
+        aka.setTypes(split[5].split(","));
+        aka.setAttributes(split[6].split(","));
+        aka.setOriginalTitle(getBoolean(split[7]));
+        return aka;
     }
 
     /**

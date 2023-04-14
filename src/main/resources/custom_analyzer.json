@@ -9,7 +9,6 @@
             "html_strip"
           ],
           "filter": [
-            "word_delimiter",
             "lowercase",
             "asciifolding",
             "english_stop"

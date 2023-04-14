@@ -41,21 +41,32 @@ public class Movie extends Basics {
         this.crew = crew;
     }
 
-    public Rating getRating() {
-        return rating;
+    double averageRating;
+    int numVotes;
+
+    public double getAverageRating() {
+        return averageRating;
     }
 
-    public void setRating(Rating rating) {
-        this.rating = rating;
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public int getNumVotes() {
+        return numVotes;
+    }
+
+    public void setNumVotes(int numVotes) {
+        this.numVotes = numVotes;
     }
 
     Crew crew;
-    Rating rating;
+
 
     public String toString() {
         String result = "Tconst: " + this.getTconst().toString() + " Title: " + this.getPrimaryTitle().toString() +
                 " RuntimeMinutes: " + Integer.toString(this.getRuntimeMinutes()) + " StartYear: " + this.getStartYear()
-                + " Rating: " + this.getRating().getAverageRating();
+                + " Rating: " + this.getAverageRating();
         if (this.getGenres() != null) {
             result += " Genres: [";
             for (String genre : this.getGenres()) {

@@ -45,6 +45,10 @@ public class IndexController {
         return new ResponseEntity(returnJSON, HttpStatus.OK);
     }
 
+    @Operation(summary = "Index the files")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Results retrieved"),
+    })
     @GetMapping("/{query}")
     public ResponseEntity searchQuery(@PathVariable String query) {
         List<Movie> movies = elasticLowClient.getDocumentsQuery(query);

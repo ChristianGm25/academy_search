@@ -2,10 +2,7 @@ package co.empathy.academy.search.Repositories;
 
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
-import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.MultiMatchQuery;
-import co.elastic.clients.elasticsearch._types.query_dsl.Query;
-import co.elastic.clients.elasticsearch._types.query_dsl.RangeQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
@@ -50,8 +47,11 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         List<Movie> movies = new LinkedList<>();
         List<Query> queries = new LinkedList<>();
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
+        Query typeQuery = MatchQuery.of(p -> p.query("movie").field("titleType"))._toQuery();
+        queries.add(typeQuery);
         queries.add(multiMatchQuery._toQuery());
         queries.add(beforeThisYear);
+
         Query bulkQueries = BoolQuery.of(p -> p.filter(queries))._toQuery();
         SearchRequest searchRequest = SearchRequest.of(p -> p
                 .index(indexName)
@@ -79,6 +79,8 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         List<Query> queries = new LinkedList<>();
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
         queries.add(beforeThisYear);
+        Query typeQuery = MatchQuery.of(p -> p.query("movie").field("titleType"))._toQuery();
+        queries.add(typeQuery);
         Query bulkQueries = BoolQuery.of(p -> p.filter(queries))._toQuery();
         SearchRequest searchRequest = SearchRequest.of(p -> p
                 .index(indexName)

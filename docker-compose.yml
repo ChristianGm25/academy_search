@@ -1,7 +1,7 @@
 version: '2.1'
 services:
   elasticsearch:
-    image: "christiangm25/elasticsearch_indexed:elasticsearch_indexed"
+    image: "christiangm25/elastic_indexdone:fully_indexed"
     hostname: "elasticsearch"
     container_name: elasticsearch-docker
     environment:

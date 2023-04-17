@@ -45,13 +45,27 @@ public class IndexController {
         return new ResponseEntity(returnJSON, HttpStatus.OK);
     }
 
-    @Operation(summary = "Index the files")
+    @Operation(summary = "Retrieves docs associated to that query")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
     @GetMapping("/{query}")
     public ResponseEntity searchQuery(@PathVariable String query) {
         List<Movie> movies = elasticLowClient.getDocumentsQuery(query);
+        JSONObject returnJSON = new JSONObject();
+        returnJSON.put("hits", movies);
+        returnJSON.put("facets", "");
+        returnJSON.put("spellchecked", "");
+        return new ResponseEntity(returnJSON, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Retrieves docs associated to that query")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Results retrieved"),
+    })
+    @GetMapping("/genre/{query}")
+    public ResponseEntity searchQueryGenre(@PathVariable String genre) {
+        List<Movie> movies = elasticLowClient.getDocumentsGenre(genre);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);
         returnJSON.put("facets", "");

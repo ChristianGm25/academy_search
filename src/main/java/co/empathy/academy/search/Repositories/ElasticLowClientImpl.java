@@ -44,7 +44,6 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
 
         MultiMatchQuery multiMatchQuery = MultiMatchQuery.of(p -> p.fields("primaryTitle", "originalTitle").query(query));
-        List<Movie> movies = new LinkedList<>();
         List<Query> queries = new LinkedList<>();
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
         Query typeQuery = MatchQuery.of(p -> p.query("movie").field("titleType"))._toQuery();
@@ -52,12 +51,33 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         queries.add(multiMatchQuery._toQuery());
         queries.add(beforeThisYear);
 
+        return performQuery(queries, sort, 50);
+    }
+
+    @Override
+    public List<Movie> getDocumentsGenre(String genre) {
+        SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
+
+        MatchQuery genreQuery = MatchQuery.of(p -> p.field("genres").query(genre));
+        List<Query> queries = new LinkedList<>();
+        Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
+        Query typeQuery = MatchQuery.of(p -> p.field("titleType").query("movie"))._toQuery();
+
+        queries.add(typeQuery);
+        queries.add(genreQuery._toQuery());
+        queries.add(beforeThisYear);
+
+        return performQuery(queries, sort, 50);
+    }
+
+    public List<Movie> performQuery(List<Query> queries, SortOptions sort, int size) {
+        List<Movie> movies = new LinkedList<>();
         Query bulkQueries = BoolQuery.of(p -> p.filter(queries))._toQuery();
         SearchRequest searchRequest = SearchRequest.of(p -> p
                 .index(indexName)
                 .query(bulkQueries)
                 .sort(sort)
-                .size(50));
+                .size(size));
         try {
             SearchResponse searchResponse = elasticSearchConfiguration.elasticsearchClient().search(searchRequest, Movie.class);
 
@@ -66,7 +86,6 @@ public class ElasticLowClientImpl implements ElasticLowClient {
             for (Hit object : hits) {
                 movies.add((Movie) object.source());
             }
-            return movies;
         } catch (IOException e) {
             System.out.println("There was an error retrieving the movies");
         }
@@ -81,28 +100,8 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         queries.add(beforeThisYear);
         Query typeQuery = MatchQuery.of(p -> p.query("movie").field("titleType"))._toQuery();
         queries.add(typeQuery);
-        Query bulkQueries = BoolQuery.of(p -> p.filter(queries))._toQuery();
-        SearchRequest searchRequest = SearchRequest.of(p -> p
-                .index(indexName)
-                .query(bulkQueries)
-                .sort(sort)
-                .size(50));
 
-        List<Movie> movies = new LinkedList<>();
-        try {
-            SearchResponse searchResponse = elasticSearchConfiguration
-                    .elasticsearchClient().search(searchRequest,
-                            Movie.class);
-            List<Hit<Movie>> hits = searchResponse.hits().hits();
-
-            for (Hit<Movie> movie : hits) {
-                movies.add(movie.source());
-            }
-            return movies;
-        } catch (IOException e) {
-            System.out.println("There was an error retrieving the movies");
-        }
-        return movies;
+        return performQuery(queries, sort, 50);
     }
 
 

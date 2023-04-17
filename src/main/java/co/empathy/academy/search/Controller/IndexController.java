@@ -29,7 +29,7 @@ public class IndexController {
     IndexService indexService = new IndexServiceImpl(elasticLowClient);
 
     @Autowired
-    QueryEngineImpl queriesEngine = new QueryEngineImpl(elasticLowClient);
+    QueryEngineImpl queriesEngine = new QueryEngineImpl(new ElasticSearchConfiguration().elasticsearchClient());
 
     @Operation(summary = "Retrieve several movies without any filters")
     @ApiResponses(value = {
@@ -37,7 +37,7 @@ public class IndexController {
     })
     @GetMapping
     public ResponseEntity searchMatchAll() {
-        List<Movie> movies = elasticLowClient.getDocuments();
+        List<Movie> movies = queriesEngine.getDocuments();
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);
         returnJSON.put("facets", "");
@@ -51,7 +51,7 @@ public class IndexController {
     })
     @GetMapping("/{query}")
     public ResponseEntity searchQuery(@PathVariable String query) {
-        List<Movie> movies = elasticLowClient.getDocumentsQuery(query);
+        List<Movie> movies = queriesEngine.getDocumentsQuery(query);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);
         returnJSON.put("facets", "");
@@ -63,9 +63,9 @@ public class IndexController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
-    @GetMapping("/genre/{query}")
+    @GetMapping("/genre/{genre}")
     public ResponseEntity searchQueryGenre(@PathVariable String genre) {
-        List<Movie> movies = elasticLowClient.getDocumentsGenre(genre);
+        List<Movie> movies = queriesEngine.getDocumentsGenre(genre);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);
         returnJSON.put("facets", "");

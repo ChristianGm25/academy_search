@@ -66,12 +66,12 @@ public class IndexController {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
     @GetMapping(value = "/filters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam("genre") Optional<String> genre,
-                                                          @RequestParam("minDuration") Optional<Integer> minDuration,
-                                                          @RequestParam("maxDuration") Optional<Integer> maxDuration,
-                                                          @RequestParam("minDate") Optional<String> minDate,
-                                                          @RequestParam("maxDate") Optional<String> maxDate,
-                                                          @RequestParam("minScore") Optional<Integer> minScore) {
+    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam(required = false) Optional<String> genre,
+                                                          @RequestParam(required = false) Optional<Integer> minDuration,
+                                                          @RequestParam(required = false) Optional<Integer> maxDuration,
+                                                          @RequestParam(required = false) Optional<String> minDate,
+                                                          @RequestParam(required = false) Optional<String> maxDate,
+                                                          @RequestParam(required = false) Optional<Integer> minScore) {
         List<Movie> movies = queriesEngine.getDocumentsFiltered(genre, minDuration, maxDuration, minDate, maxDate, minScore);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);

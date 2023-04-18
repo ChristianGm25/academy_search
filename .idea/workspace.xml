@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Configuration/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Configuration/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,6 +19,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -184,7 +183,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681720353315</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Genres call working">
+      <created>1681729703391</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1681729703391</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -213,7 +219,8 @@
     <MESSAGE value="Filter by title" />
     <MESSAGE value="Processing akas properly" />
     <MESSAGE value="Docker working" />
-    <option name="LAST_COMMIT_MESSAGE" value="Docker working" />
+    <MESSAGE value="Genres call working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Genres call working" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

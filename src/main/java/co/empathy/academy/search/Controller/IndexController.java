@@ -12,12 +12,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/movies")
@@ -35,7 +37,7 @@ public class IndexController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "List successfully retrieved"),
     })
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity searchMatchAll() {
         List<Movie> movies = queriesEngine.getDocuments();
         JSONObject returnJSON = new JSONObject();
@@ -49,7 +51,7 @@ public class IndexController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
-    @GetMapping("/{query}")
+    @GetMapping(value = "/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity searchQuery(@PathVariable String query) {
         List<Movie> movies = queriesEngine.getDocumentsQuery(query);
         JSONObject returnJSON = new JSONObject();
@@ -59,7 +61,26 @@ public class IndexController {
         return new ResponseEntity(returnJSON, HttpStatus.OK);
     }
 
-    @Operation(summary = "Retrieves docs associated to that query")
+    @Operation(summary = "Retrieves docs associated with a set of filters")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Results retrieved"),
+    })
+    @GetMapping(value = "/filters", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam("genre") Optional<String> genre,
+                                                          @RequestParam("minDuration") Optional<Integer> minDuration,
+                                                          @RequestParam("maxDuration") Optional<Integer> maxDuration,
+                                                          @RequestParam("minDate") Optional<String> minDate,
+                                                          @RequestParam("maxDate") Optional<String> maxDate,
+                                                          @RequestParam("minScore") Optional<Integer> minScore) {
+        List<Movie> movies = queriesEngine.getDocumentsFiltered(genre, minDuration, maxDuration, minDate, maxDate, minScore);
+        JSONObject returnJSON = new JSONObject();
+        returnJSON.put("hits", movies);
+        returnJSON.put("facets", "");
+        returnJSON.put("spellchecked", "");
+        return new ResponseEntity(returnJSON, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Retrieves docs associated to that genre")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })

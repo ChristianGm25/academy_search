@@ -82,14 +82,18 @@ public class IndexController {
     }
 
     @Operation(summary = "Retrieves docs recommended depending on a set of movies")
-    @Parameter(name = "movies", description = "Set of movies selected by the user")
+    @Parameter(name = "selectedMovies", description = "Set of movies selected by the user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
     @GetMapping(value = "/recommended")
-    public ResponseEntity<List<Movie>> getRecommendedMovies(@RequestBody List<Movie> selectedMovies) {
-
-        return new ResponseEntity<>(queriesEngine.getRecommendedMovies(selectedMovies), HttpStatus.OK);
+    public ResponseEntity<JSONObject> getRecommendedMovies(@RequestBody List<Movie> selectedMovies) {
+        List<Movie> movies = queriesEngine.getRecommendedMovies(selectedMovies);
+        JSONObject returnJSON = new JSONObject();
+        returnJSON.put("hits", movies);
+        returnJSON.put("facets", "");
+        returnJSON.put("spellchecked", "");
+        return new ResponseEntity<>(returnJSON, HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves docs associated to that genre")

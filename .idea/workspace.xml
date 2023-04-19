@@ -6,21 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngine.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/IndexIMDBTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/IndexIMDBTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/SearchApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/SearchApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/UsersTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/UsersTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Configuration/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Configuration/Config.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngineImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngineImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/IndexIMDBTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/SearchApplicationTests.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/UsersTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -239,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681814309748</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Working recommended movies">
+      <created>1681891561515</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1681891561515</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -271,7 +264,8 @@
     <MESSAGE value="Genres call working" />
     <MESSAGE value="Filters to be implemented" />
     <MESSAGE value="Removed language param" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed language param" />
+    <MESSAGE value="Working recommended movies" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working recommended movies" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

@@ -69,6 +69,7 @@ public class QueryEngineImpl implements QueryEngine {
                 CommonTermsQuery genreQuery = CommonTermsQuery.of(p -> p.field("genres").query(term));
                 queries.add(genreQuery._toQuery());
             }
+            System.out.println(queries);
         }
         if (minDuration.isPresent()) {
             queries.add(RangeQuery.of(p -> p.field("runtimeMinutes").gte(JsonData.of(minDuration.get())))._toQuery());
@@ -141,6 +142,7 @@ public class QueryEngineImpl implements QueryEngine {
             List<Hit<Movie>> hits = searchResponse.hits().hits();
 
             for (Hit object : hits) {
+                System.out.println(object.source());
                 movies.add((Movie) object.source());
             }
         } catch (IOException e) {

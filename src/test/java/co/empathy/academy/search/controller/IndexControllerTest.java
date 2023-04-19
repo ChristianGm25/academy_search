@@ -1,22 +1,20 @@
-package co.empathy.academy.search;
+package co.empathy.academy.search.controller;
 
-import org.junit.jupiter.api.Test;
+import co.empathy.academy.search.Controller.IndexController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class IndexIMDBTest {
-    @Autowired
-    private MockMvc mvc;
+class IndexControllerTest {
 
-    @Test
-    public void compareStrings() {
-        assertTrue("tt9916856".compareTo("tt9916857") < 0);
-    }
+    private final IndexController indexcontroller = mock((IndexController.class));
+    @Autowired
+    MockMvc mvc;
+
 
 }

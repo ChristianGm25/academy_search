@@ -1,4 +1,4 @@
-package co.empathy.academy.search;
+package co.empathy.academy.search.service;
 
 import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
 import co.empathy.academy.search.Service.SearchService;

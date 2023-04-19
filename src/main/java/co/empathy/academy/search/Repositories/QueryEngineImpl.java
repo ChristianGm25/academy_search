@@ -11,9 +11,7 @@ import co.elastic.clients.json.JsonData;
 import co.empathy.academy.search.Model.Movie;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class QueryEngineImpl implements QueryEngine {
 
@@ -29,15 +27,48 @@ public class QueryEngineImpl implements QueryEngine {
 
 
     @Override
+    public List<Movie> getRecommendedMovies(List<Movie> selectedMovies) {
+        Map<String, Integer> genresMap = new HashMap<>();
+        int tempValue;
+        String genreToQuery = "";
+        for (Movie m : selectedMovies) {
+            for (String genre : m.getGenres()) {
+                if (genresMap.containsKey(genre)) {
+                    tempValue = genresMap.get(genre) + 1;
+                    genresMap.put(genre, tempValue);
+                } else {
+                    genresMap.put(genre, 1);
+                }
+            }
+        }
+
+        tempValue = 0;
+        //Iterate over the map and find the genre with the most appearances
+        for (String key : genresMap.keySet()) {
+            if (tempValue <= genresMap.get(key)) {
+                tempValue = genresMap.get(key);
+                genreToQuery = key;
+            }
+        }
+        if (genreToQuery.equals("")) {
+            return getDocuments();
+        }
+        return getDocumentsGenre(genreToQuery);
+    }
+
+    @Override
     public List<Movie> getDocumentsFiltered(Optional<String> genre, Optional<Integer> minDuration,
-                                            Optional<Integer> maxDuration, Optional<String> minDate,
-                                            Optional<String> maxDate, Optional<Integer> minScore) {
+                                            Optional<Integer> maxDuration, Optional<Integer> minDate,
+                                            Optional<Integer> maxDate, Optional<Double> minScore) {
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
         List<Query> queries = new LinkedList<>();
 
         if (genre.isPresent()) {
-            CommonTermsQuery genreQuery = CommonTermsQuery.of(p -> p.field("genres").query(genre.get()));
-            queries.add(genreQuery._toQuery());
+            String[] terms = genre.get().split(",");
+            for (String term : terms) {
+                CommonTermsQuery genreQuery = CommonTermsQuery.of(p -> p.field("genres").query(term));
+                queries.add(genreQuery._toQuery());
+            }
         }
         if (minDuration.isPresent()) {
             queries.add(RangeQuery.of(p -> p.field("runtimeMinutes").gte(JsonData.of(minDuration.get())))._toQuery());
@@ -52,7 +83,7 @@ public class QueryEngineImpl implements QueryEngine {
             queries.add(RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(maxDate.get())))._toQuery());
         }
         if (minScore.isPresent()) {
-            queries.add(RangeQuery.of(p -> p.field("averaqeRating").gte(JsonData.of(minScore.get())))._toQuery());
+            queries.add(RangeQuery.of(p -> p.field("averageRating").gte(JsonData.of(minScore.get())))._toQuery());
         }
         return performQuery(queries, sort, 1000);
 

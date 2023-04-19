@@ -7,6 +7,7 @@ import co.empathy.academy.search.Repositories.QueryEngineImpl;
 import co.empathy.academy.search.Service.IndexService;
 import co.empathy.academy.search.Service.IndexServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import net.minidev.json.JSONObject;
@@ -66,18 +67,29 @@ public class IndexController {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
     @GetMapping(value = "/filters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam(required = false) Optional<String> genre,
-                                                          @RequestParam(required = false) Optional<Integer> minDuration,
-                                                          @RequestParam(required = false) Optional<Integer> maxDuration,
-                                                          @RequestParam(required = false) Optional<String> minDate,
-                                                          @RequestParam(required = false) Optional<String> maxDate,
-                                                          @RequestParam(required = false) Optional<Integer> minScore) {
+    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam Optional<String> genre,
+                                                          @RequestParam(defaultValue = "0") Optional<Integer> minDuration,
+                                                          @RequestParam Optional<Integer> maxDuration,
+                                                          @RequestParam Optional<Integer> minDate,
+                                                          @RequestParam(defaultValue = "2023") Optional<Integer> maxDate,
+                                                          @RequestParam(defaultValue = "0.0") Optional<Double> minScore) {
         List<Movie> movies = queriesEngine.getDocumentsFiltered(genre, minDuration, maxDuration, minDate, maxDate, minScore);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);
         returnJSON.put("facets", "");
         returnJSON.put("spellchecked", "");
         return new ResponseEntity(returnJSON, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Retrieves docs recommended depending on a set of movies")
+    @Parameter(name = "movies", description = "Set of movies selected by the user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Results retrieved"),
+    })
+    @GetMapping(value = "/recommended")
+    public ResponseEntity<List<Movie>> getRecommendedMovies(@RequestBody List<Movie> selectedMovies) {
+
+        return new ResponseEntity<>(queriesEngine.getRecommendedMovies(selectedMovies), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves docs associated to that genre")

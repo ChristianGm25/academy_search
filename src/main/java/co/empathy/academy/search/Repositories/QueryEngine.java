@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface QueryEngine {
     List<Movie> getDocumentsFiltered(Optional<String> genre, Optional<Integer> minDuration,
-                                     Optional<Integer> maxDuration, Optional<String> minDate,
-                                     Optional<String> maxDate, Optional<Integer> minScore);
+                                     Optional<Integer> maxDuration, Optional<Integer> minDate,
+                                     Optional<Integer> maxDate, Optional<Double> minScore);
 
     List<Movie> getDocuments();
 
@@ -19,6 +19,8 @@ public interface QueryEngine {
     List<Movie> getDocumentsGenre(String genre);
 
     List<Movie> performQuery(List<Query> queries, SortOptions sort, int size);
+
+    List<Movie> getRecommendedMovies(List<Movie> selectedMovies);
 
 
 }

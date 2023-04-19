@@ -57,11 +57,14 @@ public class QueryEngineImpl implements QueryEngine {
     }
 
     @Override
-    public List<Movie> getDocumentsFiltered(Optional<String> genre, Optional<Integer> minDuration,
+    public List<Movie> getDocumentsFiltered(String query, Optional<String> genre, Optional<Integer> minDuration,
                                             Optional<Integer> maxDuration, Optional<Integer> minDate,
                                             Optional<Integer> maxDate, Optional<Double> minScore) {
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
         List<Query> queries = new LinkedList<>();
+
+        MultiMatchQuery multiMatchQuery = MultiMatchQuery.of(p -> p.fields("primaryTitle", "originalTitle").query(query));
+        queries.add(multiMatchQuery._toQuery());
 
         if (genre.isPresent()) {
             String[] terms = genre.get().split(",");
@@ -81,6 +84,8 @@ public class QueryEngineImpl implements QueryEngine {
         }
         if (maxDate.isPresent()) {
             queries.add(RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(maxDate.get())))._toQuery());
+        } else {
+            queries.add(RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery());
         }
         if (minScore.isPresent()) {
             queries.add(RangeQuery.of(p -> p.field("averageRating").gte(JsonData.of(minScore.get())))._toQuery());
@@ -128,7 +133,7 @@ public class QueryEngineImpl implements QueryEngine {
     @Override
     public List<Movie> performQuery(List<Query> queries, SortOptions sort) {
         List<Movie> movies = new LinkedList<>();
-        int size = 100;
+        int size = 50;
         //Query bulkQueries = BoolQuery.of(p->p.filter(queries).mustNot(MatchQuery.of(f->f.field("titleType").query(NOT_MOVIES))._toQuery()))._toQuery();
         queries.add(MatchQuery.of(p -> p.field("titleType").query("movie"))._toQuery());
         Query bulkQueries = BoolQuery.of(p -> p.must(queries))._toQuery();

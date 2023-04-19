@@ -48,6 +48,7 @@ public class IndexController {
         return new ResponseEntity(returnJSON, HttpStatus.OK);
     }
 
+    /*
     @Operation(summary = "Retrieves docs associated to that query")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
@@ -60,20 +61,21 @@ public class IndexController {
         returnJSON.put("facets", "");
         returnJSON.put("spellchecked", "");
         return new ResponseEntity(returnJSON, HttpStatus.OK);
-    }
+    }*/
 
     @Operation(summary = "Retrieves docs associated with a set of filters")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
-    @GetMapping(value = "/filters", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam Optional<String> genre,
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam String query,
+                                                          @RequestParam Optional<String> genre,
                                                           @RequestParam(defaultValue = "0") Optional<Integer> minDuration,
                                                           @RequestParam Optional<Integer> maxDuration,
                                                           @RequestParam Optional<Integer> minDate,
                                                           @RequestParam(defaultValue = "2023") Optional<Integer> maxDate,
                                                           @RequestParam(defaultValue = "0.0") Optional<Double> minScore) {
-        List<Movie> movies = queriesEngine.getDocumentsFiltered(genre, minDuration, maxDuration, minDate, maxDate, minScore);
+        List<Movie> movies = queriesEngine.getDocumentsFiltered(query, genre, minDuration, maxDuration, minDate, maxDate, minScore);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);
         returnJSON.put("facets", "");

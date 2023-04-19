@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/HelloWorldControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/HelloWorldControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/SearchApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/SearchApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/UsersTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/UsersTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -232,7 +236,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681891561515</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Fix call according to contract">
+      <created>1681892498317</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1681892498317</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -265,7 +276,8 @@
     <MESSAGE value="Filters to be implemented" />
     <MESSAGE value="Removed language param" />
     <MESSAGE value="Working recommended movies" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working recommended movies" />
+    <MESSAGE value="Fix call according to contract" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix call according to contract" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

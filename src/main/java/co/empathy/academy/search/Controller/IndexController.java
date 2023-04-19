@@ -104,7 +104,7 @@ public class IndexController {
     })
     @GetMapping("/genre/{genre}")
     public ResponseEntity searchQueryGenre(@PathVariable String genre) {
-        List<Movie> movies = queriesEngine.getDocumentsGenre(genre);
+        List<Movie> movies = queriesEngine.getDocumentsGenre(genre, 50);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);
         returnJSON.put("facets", "");

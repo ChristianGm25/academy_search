@@ -26,6 +26,13 @@ public class QueryEngineImpl implements QueryEngine {
     }
 
 
+    /*
+     *   Return a list of movies that depends on the selectedMovies parameter,
+     *   calculating which genre appears the most in the list and returning a query
+     *   over that genre
+     *
+     *
+     */
     @Override
     public List<Movie> getRecommendedMovies(List<Movie> selectedMovies) {
         Map<String, Integer> genresMap = new HashMap<>();
@@ -53,7 +60,7 @@ public class QueryEngineImpl implements QueryEngine {
         if (genreToQuery.equals("")) {
             return getDocuments();
         }
-        return getDocumentsGenre(genreToQuery);
+        return getDocumentsGenre(genreToQuery, 10);
     }
 
     @Override
@@ -91,7 +98,7 @@ public class QueryEngineImpl implements QueryEngine {
             queries.add(RangeQuery.of(p -> p.field("averageRating").gte(JsonData.of(minScore.get())))._toQuery());
         }
 
-        return performQuery(queries, sort);
+        return performQuery(queries, sort, 50);
 
     }
 
@@ -101,7 +108,7 @@ public class QueryEngineImpl implements QueryEngine {
         List<Query> queries = new LinkedList<>();
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
         queries.add(beforeThisYear);
-        return performQuery(queries, sort);
+        return performQuery(queries, sort, 50);
     }
 
     @Override
@@ -115,11 +122,11 @@ public class QueryEngineImpl implements QueryEngine {
         queries.add(multiMatchQuery._toQuery());
         queries.add(beforeThisYear);
 
-        return performQuery(queries, sort);
+        return performQuery(queries, sort, 50);
     }
 
     @Override
-    public List<Movie> getDocumentsGenre(String genre) {
+    public List<Movie> getDocumentsGenre(String genre, int size) {
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("averageRating").order(SortOrder.Desc)).build();
         CommonTermsQuery genreQuery = CommonTermsQuery.of(p -> p.field("genres").query(genre));
         List<Query> queries = new LinkedList<>();
@@ -127,13 +134,12 @@ public class QueryEngineImpl implements QueryEngine {
         queries.add(genreQuery._toQuery());
         queries.add(beforeThisYear);
 
-        return performQuery(queries, sort);
+        return performQuery(queries, sort, 50);
     }
 
     @Override
-    public List<Movie> performQuery(List<Query> queries, SortOptions sort) {
+    public List<Movie> performQuery(List<Query> queries, SortOptions sort, int size) {
         List<Movie> movies = new LinkedList<>();
-        int size = 50;
         //Query bulkQueries = BoolQuery.of(p->p.filter(queries).mustNot(MatchQuery.of(f->f.field("titleType").query(NOT_MOVIES))._toQuery()))._toQuery();
         queries.add(MatchQuery.of(p -> p.field("titleType").query("movie"))._toQuery());
         Query bulkQueries = BoolQuery.of(p -> p.must(queries))._toQuery();

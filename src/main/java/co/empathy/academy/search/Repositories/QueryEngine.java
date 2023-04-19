@@ -18,7 +18,7 @@ public interface QueryEngine {
 
     List<Movie> getDocumentsGenre(String genre);
 
-    List<Movie> performQuery(List<Query> queries, SortOptions sort, int size);
+    List<Movie> performQuery(List<Query> queries, SortOptions sort);
 
     List<Movie> getRecommendedMovies(List<Movie> selectedMovies);
 

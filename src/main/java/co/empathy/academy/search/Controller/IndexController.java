@@ -86,7 +86,7 @@ public class IndexController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
-    @GetMapping(value = "/recommended")
+    @RequestMapping(value = "/recommended", method = {RequestMethod.POST, RequestMethod.GET})
     public ResponseEntity<JSONObject> getRecommendedMovies(@RequestParam(name = "selectedMovies") List<Movie> selectedMovies) {
         List<Movie> movies = queriesEngine.getRecommendedMovies(selectedMovies);
         JSONObject returnJSON = new JSONObject();

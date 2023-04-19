@@ -86,7 +86,7 @@ public class QueryEngineImpl implements QueryEngine {
             queries.add(RangeQuery.of(p -> p.field("averageRating").gte(JsonData.of(minScore.get())))._toQuery());
         }
 
-        return performQuery(queries, sort, 1000);
+        return performQuery(queries, sort);
 
     }
 
@@ -96,7 +96,7 @@ public class QueryEngineImpl implements QueryEngine {
         List<Query> queries = new LinkedList<>();
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
         queries.add(beforeThisYear);
-        return performQuery(queries, sort, 1000);
+        return performQuery(queries, sort);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class QueryEngineImpl implements QueryEngine {
         queries.add(multiMatchQuery._toQuery());
         queries.add(beforeThisYear);
 
-        return performQuery(queries, sort, 1000);
+        return performQuery(queries, sort);
     }
 
     @Override
@@ -122,12 +122,13 @@ public class QueryEngineImpl implements QueryEngine {
         queries.add(genreQuery._toQuery());
         queries.add(beforeThisYear);
 
-        return performQuery(queries, sort, 1000);
+        return performQuery(queries, sort);
     }
 
     @Override
-    public List<Movie> performQuery(List<Query> queries, SortOptions sort, int size) {
+    public List<Movie> performQuery(List<Query> queries, SortOptions sort) {
         List<Movie> movies = new LinkedList<>();
+        int size = 100;
         //Query bulkQueries = BoolQuery.of(p->p.filter(queries).mustNot(MatchQuery.of(f->f.field("titleType").query(NOT_MOVIES))._toQuery()))._toQuery();
         queries.add(MatchQuery.of(p -> p.field("titleType").query("movie"))._toQuery());
         Query bulkQueries = BoolQuery.of(p -> p.must(queries))._toQuery();

@@ -5,6 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Model/QueryCluster.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/ElasticLowClientImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -287,7 +290,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681900236161</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Adjusted size of return lists">
+      <created>1681900920454</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1681900920454</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

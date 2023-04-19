@@ -32,6 +32,11 @@ public class ElasticLowClientImpl implements ElasticLowClient {
     }
 
 
+    /**
+     * Creates a cluster with the name of 'indexName', mappings of 'my_index_mapping.json' and settings of 'custom_analyzer.json'
+     *
+     * @throws IOException
+     */
     @Override
     public void indexCreation() throws IOException {
         try {
@@ -54,6 +59,11 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         }
     }
 
+    /**
+     * Deletes the index of 'indexName'
+     *
+     * @throws IOException
+     */
     @Override
     public void indexDeletion() throws IOException {
         try {
@@ -64,13 +74,19 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         }
     }
 
+    /**
+     * Introduces in the index a bulk of documents
+     *
+     * @param movies, list of movies to be indexed in the batch
+     * @throws IOException
+     */
     @Override
-    public void indexMovies(List<Movie> movies) throws IOException{
+    public void indexMovies(List<Movie> movies) throws IOException {
         BulkRequest.Builder builder = new BulkRequest.Builder();
-        if(movies.isEmpty()){
+        if (movies.isEmpty()) {
             return;
         }
-        for(Movie m: movies){
+        for (Movie m : movies) {
             builder.operations(f ->
                     f.index(idx -> idx.index(indexName)
                             .document(m)));
@@ -80,10 +96,5 @@ public class ElasticLowClientImpl implements ElasticLowClient {
         if(response.errors()){
             System.out.print("Error indexing");
         }
-        //LOGGER.info("Indexing multiple docs");
-
-
     }
-
-
 }

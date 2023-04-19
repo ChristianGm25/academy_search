@@ -81,6 +81,11 @@ public class QueryEngineImpl implements QueryEngine {
                                             Optional<Integer> maxDuration, Optional<Integer> minDate,
                                             Optional<Integer> maxDate, Optional<Double> minScore) {
 
+        //If the query is empty then we return the initial movies
+        if (query.equals("")) {
+            return getDocuments();
+        }
+
         //Sort options for the results
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
         //List of queries
@@ -127,10 +132,15 @@ public class QueryEngineImpl implements QueryEngine {
      */
     @Override
     public List<Movie> getDocuments() {
+        //Sort options for the results
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
+        //List of queries
         List<Query> queries = new LinkedList<>();
+
+        //Query to only show results previous to 2023
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
         queries.add(beforeThisYear);
+
         return performQuery(queries, sort, 50);
     }
 
@@ -142,10 +152,10 @@ public class QueryEngineImpl implements QueryEngine {
      */
     @Override
     public List<Movie> getDocumentsQuery(String query) {
+
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
         List<Query> queries = new LinkedList<>();
 
-        //Queries
         MultiMatchQuery multiMatchQuery = MultiMatchQuery.of(p -> p.fields("primaryTitle", "originalTitle").query(query));
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
         queries.add(multiMatchQuery._toQuery());
@@ -154,6 +164,13 @@ public class QueryEngineImpl implements QueryEngine {
         return performQuery(queries, sort, 50);
     }
 
+    /**
+     * Gets all the movies associated with a genre, ordered by averageRating (descending) and previous to 2023
+     *
+     * @param genre, genre of the movies returned
+     * @param size,  number of results to be returned
+     * @return List of movies associated to the genre
+     */
     @Override
     public List<Movie> getDocumentsGenre(String genre, int size) {
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("averageRating").order(SortOrder.Desc)).build();
@@ -166,6 +183,14 @@ public class QueryEngineImpl implements QueryEngine {
         return performQuery(queries, sort, size);
     }
 
+    /**
+     * Performs a set of queries and adds that the results are only of type movie
+     *
+     * @param queries, queries to be performed
+     * @param sort,    sorting options for the results
+     * @param size,    number of results
+     * @return List of movies associated with the queries and ordered according to the sort parameter
+     */
     @Override
     public List<Movie> performQuery(List<Query> queries, SortOptions sort, int size) {
         List<Movie> movies = new LinkedList<>();

@@ -1,6 +1,7 @@
 package co.empathy.academy.search.Repositories;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.SortOptions;
 import co.elastic.clients.elasticsearch._types.SortOrder;
 import co.elastic.clients.elasticsearch._types.query_dsl.*;
@@ -16,7 +17,10 @@ import java.util.*;
 public class QueryEngineImpl implements QueryEngine {
 
     //Filter to not print these types of docs
-    private final String NOT_MOVIES = "tvEpisode, video, videoGame, tvPilot";
+    private final String[] MOVIES_TYPES = {"movie", "tvMovie", "tvSeries"};
+
+    private final int MINIMUM_NUMBER_OF_VOTES = 1000;
+    private final int RESPONSE_SIZE = 100;
     private final ElasticsearchClient elasticsearchClient;
 
     private static final String indexName = "movies";
@@ -121,7 +125,7 @@ public class QueryEngineImpl implements QueryEngine {
             queries.add(RangeQuery.of(p -> p.field("averageRating").gte(JsonData.of(minScore.get())))._toQuery());
         }
 
-        return performQuery(queries, sort, 50);
+        return performQuery(queries, sort, RESPONSE_SIZE, false);
 
     }
 
@@ -141,28 +145,9 @@ public class QueryEngineImpl implements QueryEngine {
         Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
         queries.add(beforeThisYear);
 
-        return performQuery(queries, sort, 50);
+        return performQuery(queries, sort, RESPONSE_SIZE, true);
     }
 
-    /**
-     * Performs a match query over the parameter
-     *
-     * @param query, string with the title to be looked for
-     * @return List of movies associated to the query
-     */
-    @Override
-    public List<Movie> getDocumentsQuery(String query) {
-
-        SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
-        List<Query> queries = new LinkedList<>();
-
-        MultiMatchQuery multiMatchQuery = MultiMatchQuery.of(p -> p.fields("primaryTitle", "originalTitle").query(query));
-        Query beforeThisYear = RangeQuery.of(p -> p.field("startYear").lte(JsonData.of(2023)))._toQuery();
-        queries.add(multiMatchQuery._toQuery());
-        queries.add(beforeThisYear);
-
-        return performQuery(queries, sort, 50);
-    }
 
     /**
      * Gets all the movies associated with a genre, ordered by averageRating (descending) and previous to 2023
@@ -180,7 +165,7 @@ public class QueryEngineImpl implements QueryEngine {
         queries.add(genreQuery._toQuery());
         queries.add(beforeThisYear);
 
-        return performQuery(queries, sort, size);
+        return performQuery(queries, sort, size, true);
     }
 
     /**
@@ -192,10 +177,22 @@ public class QueryEngineImpl implements QueryEngine {
      * @return List of movies associated with the queries and ordered according to the sort parameter
      */
     @Override
-    public List<Movie> performQuery(List<Query> queries, SortOptions sort, int size) {
+    public List<Movie> performQuery(List<Query> queries, SortOptions sort, int size, boolean filterNumVotes) {
         List<Movie> movies = new LinkedList<>();
-        //Query bulkQueries = BoolQuery.of(p->p.filter(queries).mustNot(MatchQuery.of(f->f.field("titleType").query(NOT_MOVIES))._toQuery()))._toQuery();
-        queries.add(MatchQuery.of(p -> p.field("titleType").query("movie"))._toQuery());
+
+        //Filter by type
+        List<String> types = Arrays.asList(MOVIES_TYPES);
+        TermsQueryField terms = new TermsQueryField.Builder()
+                .value(types.stream().map(FieldValue::of).toList())
+                .build();
+        Query query = TermsQuery.of(m -> m
+                .field("titleType")
+                .terms(terms))._toQuery();
+        queries.add(query);
+
+        if (filterNumVotes) {
+            queries.add(RangeQuery.of(p -> p.field("numVotes").gte(JsonData.of(MINIMUM_NUMBER_OF_VOTES)))._toQuery());
+        }
         Query bulkQueries = BoolQuery.of(p -> p.must(queries))._toQuery();
         SearchRequest searchRequest = SearchRequest.of(p -> p
                 .index(indexName)

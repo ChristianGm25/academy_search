@@ -40,13 +40,13 @@ public class IndexServiceImpl implements IndexService {
     public CompletableFuture<String> indexAsync(long numMovies) {
         long fileSize = numMovies;
         int batches = (int) Math.ceil(fileSize / bulkSize);
+        readHeaders();
         try {
             addRating();
         } catch (IOException e) {
             System.out.println("Error reading ratings");
         }
         for (int i = 0; i < batches; i++) {
-
             try {
                 read();
                 elasticLowClient.indexMovies(this.movies);
@@ -83,21 +83,26 @@ public class IndexServiceImpl implements IndexService {
 
 
     /**
-     * @return Map containing bulkSize movies
+     * Read bulkSize lines in basics file and builds a movie with data from all the files,
+     * If the movies are not adult, add them to a list
      */
     @Override
     public void read() throws IOException {
 
+        //Data
         int readLines = 0;
         String line;
         Movie m;
         try {
-            readHeaders();
             String lineAkas = akasReader.readLine();
             String lineCrew = crewReader.readLine();
             String linePrincipals = principalsReader.readLine();
+
+            //Read until the specified bulkSize or until there are no more lines
             while ((readLines < bulkSize) && ((line = basicsReader.readLine()) != null)) {
                 m = buildMovie(line);
+
+                //Add the appropiate rating
                 setRatings(m);
 
                 // This condition is necessary because from this point the akas file is unordered, has no proper syntax
@@ -112,7 +117,7 @@ public class IndexServiceImpl implements IndexService {
                     }
                 }
 
-                //Crew reading
+                //Crew reading until files get messed up (shorten times)
                 if (lesserID(lineCrew.split("\t")[0], "tt2701228")) {
                     while (lesserID(lineCrew.split("\t")[0], m.getTconst()) && lineCrew != null) {
                         lineCrew = crewReader.readLine();
@@ -123,8 +128,8 @@ public class IndexServiceImpl implements IndexService {
                     }
                 }
 
+                //Principals reading until files get messed up
                 while (lesserID(linePrincipals.split("\t")[0], m.getTconst()) && linePrincipals != null) {
-
                     linePrincipals = principalsReader.readLine();
                 }
                 while (linePrincipals.split("\t")[0].equals(m.getTconst())) {
@@ -145,6 +150,11 @@ public class IndexServiceImpl implements IndexService {
         }
     }
 
+    /**
+     * Add the appropiate Rating object to a movie
+     *
+     * @param m, movie to add the rating to
+     */
     public void setRatings(Movie m) {
         if (this.ratings.containsKey(m.getTconst())) {
             m.setAverageRating(this.ratings.get(m.getTconst()).getAverageRating());
@@ -242,6 +252,13 @@ public class IndexServiceImpl implements IndexService {
     }
 
 
+    /**
+     * Calculates whether an id is lesser than another
+     *
+     * @param fileID,   tconst in any file
+     * @param basicsID, tconst in basics file
+     * @return true if fileID < basicsID, false otherwise
+     */
     public boolean lesserID(String fileID, String basicsID) {
         int idFile = Integer.parseInt(fileID.split("t")[2]);
         int idBasics = Integer.parseInt(basicsID.split("t")[2]);
@@ -292,7 +309,7 @@ public class IndexServiceImpl implements IndexService {
 
     /**
      *
-     * @return List of akas objects associated to the key
+     * @return Akas built from the split
      * @throws IOException Error handling for the readLine
      */
     public Akas addAkas(String[] split) throws IOException {
@@ -315,7 +332,7 @@ public class IndexServiceImpl implements IndexService {
     }
 
     /**
-     * @return Crew object associated to the movie
+     * @return Crew object built from the split
      * @throws IOException Error handling for the readLine
      */
     private Crew addCrew(String[] split) throws IOException {
@@ -329,7 +346,7 @@ public class IndexServiceImpl implements IndexService {
 
     /**
      *
-     * @return List of the principals associated to the key
+     * @return Principals built from the split
      * @throws IOException Error handling for the readLine
      */
     private Principals addPrincipals(String[] split) throws IOException {

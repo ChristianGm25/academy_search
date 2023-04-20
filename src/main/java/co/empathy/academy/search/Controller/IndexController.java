@@ -48,20 +48,6 @@ public class IndexController {
         return new ResponseEntity(returnJSON, HttpStatus.OK);
     }
 
-    /*
-    @Operation(summary = "Retrieves docs associated to that query")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Results retrieved"),
-    })
-    @GetMapping(value = "/{query}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity searchQuery(@PathVariable String query) {
-        List<Movie> movies = queriesEngine.getDocumentsQuery(query);
-        JSONObject returnJSON = new JSONObject();
-        returnJSON.put("hits", movies);
-        returnJSON.put("facets", "");
-        returnJSON.put("spellchecked", "");
-        return new ResponseEntity(returnJSON, HttpStatus.OK);
-    }*/
 
     @Operation(summary = "Retrieves docs associated with a set of filters")
     @ApiResponses(value = {
@@ -102,8 +88,8 @@ public class IndexController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
-    @GetMapping("/genre/{genre}")
-    public ResponseEntity searchQueryGenre(@PathVariable String genre) {
+    @GetMapping("/genres")
+    public ResponseEntity<JSONObject> searchQueryGenre(@RequestParam String genre) {
         List<Movie> movies = queriesEngine.getDocumentsGenre(genre, 50);
         JSONObject returnJSON = new JSONObject();
         returnJSON.put("hits", movies);

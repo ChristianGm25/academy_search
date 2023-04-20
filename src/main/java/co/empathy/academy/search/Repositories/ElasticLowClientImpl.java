@@ -1,7 +1,6 @@
 package co.empathy.academy.search.Repositories;
 
 import co.elastic.clients.elasticsearch.core.BulkRequest;
-import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.indices.DeleteIndexResponse;
 import co.empathy.academy.search.Configuration.ElasticSearchConfiguration;
 import co.empathy.academy.search.Model.Movie;
@@ -91,10 +90,7 @@ public class ElasticLowClientImpl implements ElasticLowClient {
                     f.index(idx -> idx.index(indexName)
                             .document(m)));
         }
-        BulkResponse response = elasticSearchConfiguration.elasticsearchClient().bulk(builder.build());
+        elasticSearchConfiguration.elasticsearchClient().bulk(builder.build());
 
-        if(response.errors()){
-            System.out.print("Error indexing");
-        }
     }
 }

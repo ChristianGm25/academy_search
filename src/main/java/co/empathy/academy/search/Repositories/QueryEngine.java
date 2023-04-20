@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QueryEngine {
-    List<Movie> getDocumentsFiltered(String query, Optional<String> genre, Optional<Integer> minDuration,
+    List<Movie> getDocumentsFiltered(Optional<String> query, Optional<String> genre, Optional<Integer> minDuration,
                                      Optional<Integer> maxDuration, Optional<Integer> minDate,
                                      Optional<Integer> maxDate, Optional<Double> minScore);
 

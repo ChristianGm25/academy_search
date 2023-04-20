@@ -54,7 +54,7 @@ public class IndexController {
             @ApiResponse(responseCode = "200", description = "Results retrieved"),
     })
     @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam String query,
+    public ResponseEntity<List<Movie>> searchQueryFilters(@RequestParam Optional<String> query,
                                                           @RequestParam Optional<String> genre,
                                                           @RequestParam(defaultValue = "0") Optional<Integer> minDuration,
                                                           @RequestParam Optional<Integer> maxDuration,

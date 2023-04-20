@@ -17,6 +17,7 @@ co/empathy/academy/search/Model/Movie.class
 co/empathy/academy/search/Repositories/ElasticLowClient.class
 co/empathy/academy/search/Model/User.class
 co/empathy/academy/search/Model/Basics.class
+co/empathy/academy/search/Configuration/SecurityConfiguration.class
 co/empathy/academy/search/Service/IndexServiceImpl.class
 co/empathy/academy/search/Service/UserEngineImpl.class
 co/empathy/academy/search/Service/UserEngine.class

@@ -81,23 +81,20 @@ public class QueryEngineImpl implements QueryEngine {
      * @return the list of movies recommended that match the filters
      */
     @Override
-    public List<Movie> getDocumentsFiltered(String query, Optional<String> genre, Optional<Integer> minDuration,
+    public List<Movie> getDocumentsFiltered(Optional<String> query, Optional<String> genre, Optional<Integer> minDuration,
                                             Optional<Integer> maxDuration, Optional<Integer> minDate,
                                             Optional<Integer> maxDate, Optional<Double> minScore) {
 
-        //If the query is empty then we return the initial movies
-        if (query.equals("")) {
-            return getDocuments();
-        }
 
         //Sort options for the results
         SortOptions sort = new SortOptions.Builder().field(p -> p.field("startYear").order(SortOrder.Desc)).build();
         //List of queries
         List<Query> queries = new LinkedList<>();
 
-        //Always add the MatchQuery on the field query
-        MultiMatchQuery multiMatchQuery = MultiMatchQuery.of(p -> p.fields("primaryTitle", "originalTitle").query(query));
-        queries.add(multiMatchQuery._toQuery());
+        if (query.isPresent()) {
+            MultiMatchQuery multiMatchQuery = MultiMatchQuery.of(p -> p.fields("primaryTitle", "originalTitle").query(query.get()));
+            queries.add(multiMatchQuery._toQuery());
+        }
 
         //Check every argument and, if present, add a query to filter it
         if (genre.isPresent()) {

@@ -6,8 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/IndexController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/IndexServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngine.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngineImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngineImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/HelloWorldControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/HelloWorldControllerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/controller/IndexControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/controller/IndexControllerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/IndexIMDBTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/IndexIMDBTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/SearchApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/SearchApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/UsersTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/UsersTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,7 +313,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681977368082</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Cleanup">
+      <created>1681979613824</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1681979613824</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -318,7 +335,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Merge" />
     <MESSAGE value="Created model classes and prepared for index" />
     <MESSAGE value="Reading basics and akas" />
     <MESSAGE value="Added ratings reader (TODO: Tests)" />
@@ -343,7 +359,8 @@
     <MESSAGE value="SecurityConfiguration file" />
     <MESSAGE value="Adjusted size of return lists" />
     <MESSAGE value="Types working and filter by number of votes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Types working and filter by number of votes" />
+    <MESSAGE value="Cleanup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleanup" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>

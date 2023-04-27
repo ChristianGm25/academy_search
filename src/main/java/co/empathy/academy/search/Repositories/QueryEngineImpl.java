@@ -166,11 +166,12 @@ public class QueryEngineImpl implements QueryEngine {
     }
 
     /**
-     * Performs a set of queries and adds that the results are only of type movie
+     * Performs a set of queries and adds that the results are only of types movie, tvMovie and tvSeries
      *
-     * @param queries, queries to be performed
-     * @param sort,    sorting options for the results
-     * @param size,    number of results
+     * @param queries,        queries to be performed
+     * @param sort,           sorting options for the results
+     * @param size,           number of results
+     * @param filterNumVotes, chooses whether to filter by a minimum number of votes or not
      * @return List of movies associated with the queries and ordered according to the sort parameter
      */
     @Override

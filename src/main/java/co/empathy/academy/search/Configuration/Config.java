@@ -3,7 +3,10 @@ package co.empathy.academy.search.Configuration;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.empathy.academy.search.Repositories.ElasticLowClientImpl;
 import co.empathy.academy.search.Repositories.QueryEngineImpl;
-import co.empathy.academy.search.Service.*;
+import co.empathy.academy.search.Service.IndexService;
+import co.empathy.academy.search.Service.IndexServiceImpl;
+import co.empathy.academy.search.Service.SearchService;
+import co.empathy.academy.search.Service.SearchServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -19,10 +22,6 @@ public class Config implements AsyncConfigurer {
         return new SearchServiceImpl(searchEngine);
     }
 
-    @Bean
-    public UserEngine userEngine() {
-        return new UserEngineImpl();
-    }
 
     @Bean
     public IndexService indexService(ElasticLowClientImpl elasticLowClient) {

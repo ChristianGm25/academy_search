@@ -6,18 +6,39 @@
   <component name="ChangeListManager">
     <list default="true" id="18cdeb0b-180e-4c34-802d-1808466b80f9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Configuration/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Configuration/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Exceptions/ExceptionHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Model/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Repositories/QueryEngineImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/UserEngine.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/UserEngineImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/co/empathy/academy/search/Service/UserServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/HelloWorldControllerTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/controller/IndexControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/controller/IndexControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/SearchApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/controller/SearchControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/co/empathy/academy/search/service/UsersTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Configuration/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Configuration/Config.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/IndexController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Exceptions/ExceptionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/QueryCluster.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Model/User.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/ElasticLowClientImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngine.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngine.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngineImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Repositories/QueryEngineImpl.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/IndexServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/HelloWorldControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/HelloWorldControllerTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/UserEngine.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/UserEngineImpl$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/UserEngineImpl$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/UserEngineImpl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/co/empathy/academy/search/Service/UserServiceImpl.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/controller/IndexControllerTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/controller/IndexControllerTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/IndexIMDBTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/IndexIMDBTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/SearchApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/SearchApplicationTests.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/UsersTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/UsersTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/SearchApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/co/empathy/academy/search/service/UsersTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +59,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="IMDB_Tests_filters" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -78,8 +99,8 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="IndexControllerTest.givenIndexCreation_createIndex" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.SearchControllerTest.givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString">
+    <configuration name="IndexControllerTest.givenIndexAsync_returnFilesAccepted" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="search" />
       <extension name="coverage">
         <pattern>
@@ -89,7 +110,71 @@
       </extension>
       <option name="PACKAGE_NAME" value="co.empathy.academy.search.controller" />
       <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.controller.IndexControllerTest" />
-      <option name="METHOD_NAME" value="givenIndexCreation_createIndex" />
+      <option name="METHOD_NAME" value="givenIndexAsync_returnFilesAccepted" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="IndexControllerTest.givenIndexDeletion_returnIndexDeleted" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="search" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.empathy.academy.search.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.empathy.academy.search.controller" />
+      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.controller.IndexControllerTest" />
+      <option name="METHOD_NAME" value="givenIndexDeletion_returnIndexDeleted" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SearchControllerTest.givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="search" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.empathy.academy.search.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.empathy.academy.search.controller" />
+      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.controller.SearchControllerTest" />
+      <option name="METHOD_NAME" value="givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SearchControllerTest.givenQuery_whenErrorDuringSearch_thenLetItPropagate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="search" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.empathy.academy.search.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.empathy.academy.search.controller" />
+      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.controller.SearchControllerTest" />
+      <option name="METHOD_NAME" value="givenQuery_whenErrorDuringSearch_thenLetItPropagate" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SearchControllerTest.givenQuery_whenSearch_thenReturnResult" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="search" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="co.empathy.academy.search.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="co.empathy.academy.search.controller" />
+      <option name="MAIN_CLASS_NAME" value="co.empathy.academy.search.controller.SearchControllerTest" />
+      <option name="METHOD_NAME" value="givenQuery_whenSearch_thenReturnResult" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -97,7 +182,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.IndexControllerTest.givenIndexCreation_createIndex" />
+        <item itemvalue="JUnit.SearchControllerTest.givenBlankQuery_whenSearch_thenDoNotExecuteQueryAndReturnEmptyString" />
+        <item itemvalue="JUnit.SearchControllerTest.givenQuery_whenErrorDuringSearch_thenLetItPropagate" />
+        <item itemvalue="JUnit.SearchControllerTest.givenQuery_whenSearch_thenReturnResult" />
+        <item itemvalue="JUnit.IndexControllerTest.givenIndexAsync_returnFilesAccepted" />
+        <item itemvalue="JUnit.IndexControllerTest.givenIndexDeletion_returnIndexDeleted" />
       </list>
     </recent_temporary>
   </component>
@@ -320,7 +409,21 @@
       <option name="project" value="LOCAL" />
       <updated>1681979613824</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="Optional query">
+      <created>1681980902443</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1681980902443</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Optional query">
+      <created>1681980950890</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1681980950890</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -335,7 +438,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Created model classes and prepared for index" />
     <MESSAGE value="Reading basics and akas" />
     <MESSAGE value="Added ratings reader (TODO: Tests)" />
     <MESSAGE value="Refactor to a hashmap approach" />
@@ -360,7 +462,8 @@
     <MESSAGE value="Adjusted size of return lists" />
     <MESSAGE value="Types working and filter by number of votes" />
     <MESSAGE value="Cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Cleanup" />
+    <MESSAGE value="Optional query" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optional query" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
